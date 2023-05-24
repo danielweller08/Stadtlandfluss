@@ -25,8 +25,17 @@ namespace StadtLandFluss {
 
     class Board {
         public:
-            /// @brief Default constructor.
+            /// @brief Default constructor. 
+            /// @remark Should not be used because it creates a board with a id of 0!
             Board();
+
+            /// @brief Constructor.
+            /// @param id The id of the game.
+            Board(int id);
+
+            /// @brief Gets the gameId of the board.
+            /// @return The boards gameId.
+            int get_id();
 
             /// @brief Adds a new player to the game.
             /// @param userName The name of the user to be added.
@@ -91,6 +100,8 @@ namespace StadtLandFluss {
             void remove_category(string category);
 
         private:
+            /// @brief Id of the board. Equivalent to gameId.
+            int _id;
             /// @brief State of the board.
             BoardStatus _status;
             /// @brief Board settings.
