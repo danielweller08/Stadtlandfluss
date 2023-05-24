@@ -6,14 +6,17 @@
 using namespace std;
 
 namespace StadtLandFluss {
-    Board::Board() {
-        _status = BoardStatus::Vorbereiten;
+    Board::Board() : Board(0) {}
+
+    Board::Board(int id) : _id(id), _status(BoardStatus::Vorbereiten) {
         _settings = BoardSettings();
         _settings.allowedLetters = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'V', 'W', 'Z' };
         _settings.endRoundManually = true;
         _settings.roundsAmount = 10;
         _settings.timeLimit = 60;
     }
+
+    int Board::get_id() { return _id; }
 
     map<string, int> Board::get_players() { return _players; }
 
