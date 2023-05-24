@@ -139,7 +139,7 @@ namespace StadtLandFluss {
         // Check if category exists.
         auto itCategory = find(_categories.begin(), _categories.end(), category);
         if (itCategory == _categories.end()) {
-            throw invalid_argument("Die Kategorie existiert nicht.");
+            return;
         }
 
         _categories.erase(itCategory);
