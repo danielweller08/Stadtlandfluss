@@ -36,6 +36,25 @@ namespace StadtLandFluss {
 
     BoardStatus Board::get_status() { return _status; }
 
+    BoardSettings Board::get_settings() { return _settings; }
+
+    void Board::set_settings(BoardSettings settings) {
+        // Check allowed letters.
+        if (settings.allowedLetters.size() == 0) {
+            throw invalid_argument("Mindestens ein Buchstabe muss erlaubt sein.");
+        }
+
+        _settings = settings;
+    }
+
+    map<char,map<string,map<string,string>>> Board::get_data() { return _data; }
+
+    vector<string> Board::get_categories() { return _categories; }
+
+    char Board::get_currentLetter() { return _currentLetter; }
+
+    int Board::get_currentRound() { return _currentRound; }
+
     void Board::start(mt19937 rndGen) {   
         // Check if game is allowed to be started.
         if (_status == BoardStatus::Spielen) {
@@ -67,25 +86,6 @@ namespace StadtLandFluss {
         // Update the status.
         _status = BoardStatus::Spielen;
     }
-
-    BoardSettings Board::get_settings() { return _settings; }
-
-    void Board::set_settings(BoardSettings settings) {
-        // Check allowed letters.
-        if (settings.allowedLetters.size() == 0) {
-            throw invalid_argument("Mindestens ein Buchstabe muss erlaubt sein.");
-        }
-
-        _settings = settings;
-    }
-
-    map<char,map<string,map<string,string>>> Board::get_data() { return _data; }
-
-    vector<string> Board::get_categories() { return _categories; }
-
-    char Board::get_currentLetter() { return _currentLetter; }
-
-    int Board::get_currentRound() { return _currentRound; }
 
     void Board::stop(string userName) {
         // Check if game is allowed to be stopped.
