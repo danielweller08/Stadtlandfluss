@@ -37,13 +37,13 @@ TEST(ControllerTest, CreateUserAndJoinGame) {
     const map<string, int> players = board.get_players();
 
     // Iterate through players to find the correct user
-    bool foundedUser = false;
+    bool foundUser = false;
     for (auto elem : players) {
         if (elem.first == userName) {
-            foundedUser = true;
+            foundUser = true;
         }
     }
-    ASSERT_TRUE(foundedUser);
+    ASSERT_TRUE(foundUser);
 }
 
 // Test the create_game function when the user is already in a game
@@ -283,7 +283,7 @@ TEST(ControllerTest, DeleteCategoryInvalidTest) {
     EXPECT_THROW(controller.delete_category(board.get_id(), anotherUserToken, "Animals"), std::invalid_argument);
 
     // Try deleting a category that doesn't exist, it should not throw an exception
-    EXPECT_NO_THROW(controller.delete_category(board.get_id(), userToken, "NonexistentCategory"));
+    EXPECT_NO_THROW(controller.delete_category(board.get_id(), userToken, "NonExistentCategory"));
 }
 
 // Test submit_category funciton
@@ -293,14 +293,18 @@ TEST(ControllerTest, SubmitCategoryTest) {
     int userToken = controller.get_userToken();
     Board board = controller.create_game("Alice", userToken);
 
+    // Create a category
+    board = controller.create_category(board.get_id(), userToken, "Animals");
+
     // Start the game
-    controller.start_game(board.get_id(), userToken);
+    board = controller.start_game(board.get_id(), userToken);
 
-    // Create a category and submit a value for it
-    controller.create_category(board.get_id(), userToken, "Animals");
-    controller.submit_category(board.get_id(), userToken, "Animals", "Elephant");
-
+    // Submit a value in the category
+    std::string newValue = "Elephant";
+    controller.submit_category(board.get_id(), userToken, "Animals", newValue);
+    
     // TODO: Ensure the value is correctly added to the board data
+    // auto x = board.get_data();
 }
 
 // Test submit_category exceptions
