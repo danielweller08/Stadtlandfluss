@@ -59,7 +59,7 @@ namespace StadtLandFluss {
         maxGameId++;
 
         // Create the game.
-        _games[maxGameId] = Board(maxGameId);
+        _games[maxGameId] = Board();
 
         // Assign the calling user to it.
         _players_games[userToken] = pair(maxGameId, userName);
