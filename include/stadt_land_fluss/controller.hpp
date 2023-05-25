@@ -87,7 +87,7 @@ namespace StadtLandFluss {
             /// @param userToken The token of the calling user.
             /// @param category The category of the entry to be added.
             /// @param value The value of the entry.
-            void submit_category(int gameId, int userToken, string category, string value);
+            Board submit_category(int gameId, int userToken, string category, string value);
 
         private:
             /// @brief Collection of lobbies and there gameIds.
