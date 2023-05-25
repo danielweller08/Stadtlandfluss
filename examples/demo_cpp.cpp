@@ -11,11 +11,7 @@ using namespace StadtLandFluss;
 
         Controller controller;
 
-        //Game Id for game one
-        int gameid_1;
-        
-
-        //Create players
+        // Create players
         int userToken_player1 = controller.get_userToken();
         std::string name_player1 = "Simon";
 
@@ -28,14 +24,16 @@ using namespace StadtLandFluss;
         // Create game
         Board board = controller.create_game(name_player1, userToken_player1);
 
+        // Game Id for game one
+        int gameid_1 = board.get_id();
+
          // Users join the game
         controller.join_game(gameid_1, name_player2, userToken_player2);
         controller.join_game(gameid_1, name_player3, userToken_player3);
-
+        
         // Runde 1 startet
         controller.start_game(gameid_1, userToken_player1);
 
-        
         // Adding categories
         controller.create_category(gameid_1, userToken_player1, "Stadt");
         controller.create_category(gameid_1, userToken_player1, "Land");
@@ -48,6 +46,8 @@ using namespace StadtLandFluss;
         }
 
         std::cout << "\n";
+
+        
 
         char curr_letter = board.get_currentLetter();       // Buchstabe
         printf("Buchstabe: %c \n", curr_letter);
