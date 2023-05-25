@@ -130,6 +130,11 @@ namespace StadtLandFluss {
     }
 
     void Board::add_category(string category) {
+        // Check if game already started.
+        if (_status != BoardStatus::Vorbereiten) {
+            throw invalid_argument("Kategorie kann nicht erstellt werden: Das Spiel läuft bereits.");
+        }
+
         // Check if category already exists.
         if (find(_categories.begin(), _categories.end(), category) != _categories.end()) {
             throw invalid_argument("Die Kategorie existiert bereits.");
@@ -139,6 +144,11 @@ namespace StadtLandFluss {
     }
 
     void Board::remove_category(string category) {
+        // Check if game already started.
+        if (_status != BoardStatus::Vorbereiten) {
+            throw invalid_argument("Kategorie kann nicht gelöscht werden: Das Spiel läuft bereits.");
+        }
+
         // Check if category exists.
         auto itCategory = find(_categories.begin(), _categories.end(), category);
         if (itCategory == _categories.end()) {
