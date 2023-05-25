@@ -299,11 +299,13 @@ TEST(ControllerTest, SubmitCategoryTest) {
     // Start the game
     board = controller.start_game(board.get_id(), userToken);
 
-    controller.submit_category(board.get_id(), userToken, "Animals", "Elephant");
+    char letter = board.get_currentLetter();
+
+    controller.submit_category(board.get_id(), userToken, "Animals", std::to_string(letter));
 
     board = controller.get_game(board.get_id(), userToken);
 
-    char letter = board.get_currentLetter();
+    
 
     // TODO: Ensure the value is correctly added to the board data
     // auto x = board.get_data();
