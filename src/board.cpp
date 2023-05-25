@@ -14,6 +14,7 @@ namespace StadtLandFluss {
         _settings.endRoundManually = true;
         _settings.roundsAmount = 10;
         _settings.timeLimit = 60;
+        _categories = {"Stadt", "Land", "Fluss"};
     }
 
     int Board::get_id() { return _id; }
