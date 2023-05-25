@@ -125,6 +125,11 @@ namespace StadtLandFluss {
             throw invalid_argument("Die Kategorie '" + category + "' existiert nicht.");
         }
 
+        // Check if the starting letter matches.
+        if (value[0] != _currentLetter) {
+            throw invalid_argument("Dein Eintrag beginnt nicht mit dem korrekten Buchstaben.");
+        }
+
         // Insert the category value.
         _data[_currentLetter][userName][category] = value;
     }
