@@ -293,16 +293,18 @@ TEST(ControllerTest, SubmitCategoryTest) {
     int userToken = controller.get_userToken();
     Board board = controller.create_game("Alice", userToken);
 
-    // Create a category
+    // Create a category and submit a value for it
     board = controller.create_category(board.get_id(), userToken, "Animals");
 
     // Start the game
     board = controller.start_game(board.get_id(), userToken);
 
-    // Submit a value in the category
-    std::string newValue = "Elephant";
-    controller.submit_category(board.get_id(), userToken, "Animals", newValue);
-    
+    controller.submit_category(board.get_id(), userToken, "Animals", "Elephant");
+
+    board = controller.get_game(board.get_id(), userToken);
+
+    char letter = board.get_currentLetter();
+
     // TODO: Ensure the value is correctly added to the board data
     // auto x = board.get_data();
 }
