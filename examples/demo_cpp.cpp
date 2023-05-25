@@ -2,6 +2,8 @@
 #include <stadt_land_fluss/board.hpp>
 #include <string>
 #include <iostream>
+#include <cstdio>
+#include <vector>
     
 using namespace StadtLandFluss;
 
@@ -26,11 +28,21 @@ using namespace StadtLandFluss;
 
         // Create game
         board = controller.create_game(name_player1, userToken_player1);
-
-        board.get_currentLetter();
         
-        // Users join the game
+        for(const auto& categories : board.get_categories()) {
+            std::cout << categories << "Hello\n";
+        }
+    
+        char curr_letter = board.get_currentLetter();
+
+         // Users join the game
         controller.join_game(gameid_1, name_player2, userToken_player2);
+        
+
+        // Runde startet
+        printf("Runde 1: Buchstabe: %c \n", curr_letter);
+        
+        controller.start_game(gameid_1, userToken_player1);
         controller.create_category(gameid_1, userToken_player1, "Stadt");
         controller.create_category(gameid_1, userToken_player1, "Land");
         controller.create_category(gameid_1, userToken_player1, "Fluss");
