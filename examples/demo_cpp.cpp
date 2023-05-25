@@ -68,6 +68,7 @@ using namespace StadtLandFluss;
  
         controller.stop_game(gameid_1, userToken_player1);     // Kein Spieler kann mehr Kategorien schreiben
 
+        controller.vote(gameid_1, userToken_player1, name_player2, "Stadt", true);
 
         // Runde 2 startet
         board = controller.start_game(gameid_1, userToken_player1);

@@ -204,4 +204,17 @@ namespace StadtLandFluss {
         }
         return userGameRelationFound;
     }
+
+    Board Controller::vote(int gameId, int userToken, string username_vote, string category, bool value) {
+
+        // Check if user is assigned to the game.
+        if (!userIsAssigned(gameId, userToken)) {
+            throw invalid_argument("Du bist diesem Spiel noch nicht beigetreten.");
+        }
+
+        _games[gameId].vote(_players_games[userToken].second, category, value);
+        
+        return _games[gameId];
+
+    }
 }

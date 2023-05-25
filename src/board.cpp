@@ -147,4 +147,26 @@ namespace StadtLandFluss {
 
         _categories.erase(itCategory);
     }
+    void Board::vote(string userName, string category, bool value) {
+        // Checks if player is in voting phase
+        if(_status != BoardStatus::Bewerten) {
+            throw invalid_argument("Die Kategorien können nicht zu diesem Zeitpunkt bewertet werden.");
+        }
+        
+
+        // Player votes on one category of one player
+
+        // Calls rate method when all of the votes are finished
+    }
+
+    void Board::rate() {
+        /*
+           In data stehen die guesses der einzelnen User drinnen -> Map(category of player, array<bools>)
+           Auswertung: - Kein Punkt wenn Buchstabe nicht mit guess übereinstimmt oder Eintrag leer
+                       - 5 Punkte bei gleichem guess und durch votes gültig
+                       - 10 Punkte für alleinigen guess und durch votes gültig
+
+           Wird in _players mit neuem Punktestand aktualisiert
+        */
+    }
 }

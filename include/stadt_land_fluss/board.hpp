@@ -98,6 +98,14 @@ namespace StadtLandFluss {
             /// @brief Removes a category.
             /// @param category The category to be removed.
             void remove_category(string category);
+            
+            
+            void vote(string userName, string category, bool value);
+        
+
+            /// @brief Rates players each round and adds up their points
+            void rate();
+
 
         private:
             /// @brief Id of the board. Equivalent to gameId.
