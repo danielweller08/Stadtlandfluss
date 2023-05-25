@@ -28,11 +28,6 @@ using namespace StadtLandFluss;
         // Create game
         Board board = controller.create_game(name_player1, userToken_player1);
 
-       // Adding categories
-        // board.add_category("Stadt");
-        // board.add_category("Land");
-        // board.add_category("Fluss");
-
          // Users join the game
         controller.join_game(gameid_1, name_player2, userToken_player2);
         controller.join_game(gameid_1, name_player3, userToken_player3);
@@ -41,7 +36,6 @@ using namespace StadtLandFluss;
         controller.start_game(gameid_1, userToken_player1);
 
         
-
         // Adding categories
         controller.create_category(gameid_1, userToken_player1, "Stadt");
         controller.create_category(gameid_1, userToken_player1, "Land");
@@ -66,15 +60,35 @@ using namespace StadtLandFluss;
 
         controller.submit_category(gameid_1, userToken_player2, "Stadt", "Nürnberg");
         controller.submit_category(gameid_1, userToken_player2, "Land", "Niederlande");
+        controller.submit_category(gameid_1, userToken_player2, "Fluss", "");
 
+        controller.submit_category(gameid_1, userToken_player3, "Stadt", "");
         controller.submit_category(gameid_1, userToken_player3, "Land", "Nigeria");
         controller.submit_category(gameid_1, userToken_player3, "Fluss", "Nil");
-
+ 
         controller.stop_game(gameid_1, userToken_player1);     // Kein Spieler kann mehr Kategorien schreiben
 
 
         // Runde 2 startet
-        controller.start_game(gameid_1, userToken_player1);
+        board = controller.start_game(gameid_1, userToken_player1);
+
+        // Tippen beginnt
+
+        curr_letter = board.get_currentLetter();       // Buchstabe
+        printf("Buchstabe: %c \n", curr_letter);
+
+        controller.submit_category(gameid_1, userToken_player1, "Stadt", "Berlin");
+        controller.submit_category(gameid_1, userToken_player1, "Land", "Brasilien");
+        controller.submit_category(gameid_1, userToken_player1, "Fluss", "");
+
+        controller.submit_category(gameid_1, userToken_player2, "Stadt", "");
+        controller.submit_category(gameid_1, userToken_player2, "Land", "Bulgarien");
+        controller.submit_category(gameid_1, userToken_player2, "Fluss", "");
+
+        controller.submit_category(gameid_1, userToken_player3, "Stadt", "");
+        controller.submit_category(gameid_1, userToken_player3, "Land", "Bangladesh");
+        controller.submit_category(gameid_1, userToken_player3, "Fluss", "Blauer Nil");
+
         controller.stop_game(gameid_1, userToken_player1);
         
         controller.quit_game(gameid_1, userToken_player1);       // Ende des Spiels
