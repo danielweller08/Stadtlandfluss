@@ -293,12 +293,17 @@ TEST(ControllerTest, SubmitCategoryTest) {
     int userToken = controller.get_userToken();
     Board board = controller.create_game("Alice", userToken);
 
-    // Start the game
-    controller.start_game(board.get_id(), userToken);
-
     // Create a category and submit a value for it
-    controller.create_category(board.get_id(), userToken, "Animals");
+    board = controller.create_category(board.get_id(), userToken, "Animals");
+
+    // Start the game
+    board = controller.start_game(board.get_id(), userToken);
+
     controller.submit_category(board.get_id(), userToken, "Animals", "Elephant");
+
+    board = controller.get_game(board.get_id(), userToken);
+
+    char letter = board.get_currentLetter();
 
     // TODO: Ensure the value is correctly added to the board data
 }
