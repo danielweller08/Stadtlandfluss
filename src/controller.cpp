@@ -182,7 +182,7 @@ namespace StadtLandFluss {
         return _games[gameId];
     }
 
-    void Controller::submit_category(int gameId, int userToken, string category, string value)
+    Board Controller::submit_category(int gameId, int userToken, string category, string value)
     {
         // Check if user is assigned to the game.
         if (!userIsAssigned(gameId, userToken)) {
@@ -191,6 +191,8 @@ namespace StadtLandFluss {
 
         // Submit the entry.
         _games[gameId].submit(_players_games[userToken].second, category, value);
+
+        return _games[gameId];
     }
 
     bool Controller::userIsAssigned(int gameId, int userToken) {

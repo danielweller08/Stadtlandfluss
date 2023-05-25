@@ -14,6 +14,7 @@ namespace StadtLandFluss {
         _settings.endRoundManually = true;
         _settings.roundsAmount = 10;
         _settings.timeLimit = 60;
+        _categories = {"Stadt", "Land", "Fluss"};
     }
 
     int Board::get_id() { return _id; }
@@ -125,11 +126,21 @@ namespace StadtLandFluss {
             throw invalid_argument("Die Kategorie '" + category + "' existiert nicht.");
         }
 
+        // Check if the starting letter matches.
+        if (value[0] != _currentLetter) {
+            throw invalid_argument("Dein Eintrag beginnt nicht mit dem korrekten Buchstaben.");
+        }
+
         // Insert the category value.
         _data[_currentLetter][userName][category] = value;
     }
 
     void Board::add_category(string category) {
+        // Check if game already started.
+        if (_status != BoardStatus::Vorbereiten) {
+            throw invalid_argument("Kategorie kann nicht erstellt werden: Das Spiel läuft bereits.");
+        }
+
         // Check if category already exists.
         if (find(_categories.begin(), _categories.end(), category) != _categories.end()) {
             throw invalid_argument("Die Kategorie existiert bereits.");
@@ -139,6 +150,11 @@ namespace StadtLandFluss {
     }
 
     void Board::remove_category(string category) {
+        // Check if game already started.
+        if (_status != BoardStatus::Vorbereiten) {
+            throw invalid_argument("Kategorie kann nicht gelöscht werden: Das Spiel läuft bereits.");
+        }
+
         // Check if category exists.
         auto itCategory = find(_categories.begin(), _categories.end(), category);
         if (itCategory == _categories.end()) {
