@@ -140,7 +140,7 @@ TEST(ControllerTest, StartGameTest) {
     Board board = controller.create_game("Alice", userToken);
 
     // Start the game
-    controller.start_game(board.get_id(), userToken);
+    board = controller.start_game(board.get_id(), userToken);
 
     // Ensure the game status is set to "Spielen"
     EXPECT_EQ(BoardStatus::Spielen, board.get_status());
@@ -172,14 +172,14 @@ TEST(ControllerTest, StopGameTest) {
     Board board = controller.create_game("Alice", userToken);
     
     // Start the game
-    controller.start_game(board.get_id(), userToken);
-    controller.create_category(board.get_id(), userToken, "Animals");
+    board = controller.start_game(board.get_id(), userToken);
+    board = controller.create_category(board.get_id(), userToken, "Animals");
     EXPECT_EQ(1, board.get_categories().size());
 
     controller.submit_category(board.get_id(), userToken, "Animals", "Tiger");
 
     // Stop the game
-    controller.stop_game(board.get_id(), userToken);
+    board = controller.stop_game(board.get_id(), userToken);
 
     // Ensure the game status is set to "Bewerten"
     EXPECT_EQ(BoardStatus::Bewerten, board.get_status());
@@ -227,7 +227,7 @@ TEST(ControllerTest, CreateCategoryTest) {
     EXPECT_EQ(0, board.get_categories().size());
 
     // Create a new category
-    controller.create_category(board.get_id(), userToken, "Animals");
+    board = controller.create_category(board.get_id(), userToken, "Animals");
 
     // Ensure the category is created
     EXPECT_EQ(1, board.get_categories().size());
@@ -259,12 +259,12 @@ TEST(ControllerTest, DeleteCategoryTest) {
     Board board = controller.create_game("Alice", userToken);
 
     // Create a new category
-    controller.create_category(board.get_id(), userToken, "Animals");
+    board = controller.create_category(board.get_id(), userToken, "Animals");
     // board.add_category("Animals");
     EXPECT_EQ(1, board.get_categories().size());
 
     // Delete the category
-    controller.delete_category(board.get_id(), userToken, "Animals");
+    board = controller.delete_category(board.get_id(), userToken, "Animals");
     // board.remove_category("Animals");
     
     // Ensure the category is deleted
@@ -299,16 +299,30 @@ TEST(ControllerTest, SubmitCategoryTest) {
     // Start the game
     board = controller.start_game(board.get_id(), userToken);
 
-    char letter = board.get_currentLetter();
+    char currentLetter = board.get_currentLetter();
 
-    controller.submit_category(board.get_id(), userToken, "Animals", std::to_string(letter));
+    controller.submit_category(board.get_id(), userToken, "Animals", std::to_string(currentLetter));
 
     board = controller.get_game(board.get_id(), userToken);
 
-    
+    // Iterate through board.get_data() in order to find the wanted value
+    bool findValue = false;
+    auto x = board.get_data();
 
-    // TODO: Ensure the value is correctly added to the board data
-    // auto x = board.get_data();
+    for(auto elem : x) {
+        if(elem.first == currentLetter) {
+            for(auto name : elem.second) {
+                if(name.first == "Alice") {
+                    for(auto category : name.second) {
+                        if(category.second == std::to_string(currentLetter)) {
+                            findValue = true;
+                        }
+                    }
+                }
+            }  
+        }
+    }
+    EXPECT_TRUE(findValue);
 }
 
 // Test submit_category exceptions
