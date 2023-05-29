@@ -173,11 +173,11 @@ TEST(ControllerTest, StopGameTest) {
     
     // Start the game
     board = controller.start_game(board.get_id(), userToken);
-    board = controller.create_category(board.get_id(), userToken, "Animals");
-    EXPECT_EQ(1, board.get_categories().size());
 
-    controller.submit_category(board.get_id(), userToken, "Animals", "Tiger");
-
+    char currentLetter = board.get_currentLetter();
+    controller.submit_category(board.get_id(), userToken, "Stadt", std::to_string(currentLetter));
+    controller.submit_category(board.get_id(), userToken, "Land", std::to_string(currentLetter));
+    controller.submit_category(board.get_id(), userToken, "Fluss", std::to_string(currentLetter));
     // Stop the game
     board = controller.stop_game(board.get_id(), userToken);
 
@@ -224,13 +224,13 @@ TEST(ControllerTest, CreateCategoryTest) {
     // Create a game with 0 categories
     int userToken = controller.get_userToken();
     Board board = controller.create_game("Alice", userToken);
-    EXPECT_EQ(0, board.get_categories().size());
+    EXPECT_EQ(3, board.get_categories().size());
 
     // Create a new category
     board = controller.create_category(board.get_id(), userToken, "Animals");
 
     // Ensure the category is created
-    EXPECT_EQ(1, board.get_categories().size());
+    EXPECT_EQ(4, board.get_categories().size());
 }
 
 // Test create_category exceptions
@@ -261,14 +261,14 @@ TEST(ControllerTest, DeleteCategoryTest) {
     // Create a new category
     board = controller.create_category(board.get_id(), userToken, "Animals");
     // board.add_category("Animals");
-    EXPECT_EQ(1, board.get_categories().size());
+    EXPECT_EQ(4, board.get_categories().size());
 
     // Delete the category
     board = controller.delete_category(board.get_id(), userToken, "Animals");
     // board.remove_category("Animals");
     
     // Ensure the category is deleted
-    EXPECT_EQ(0, board.get_categories().size());
+    EXPECT_EQ(3, board.get_categories().size());
 }
 
 // Test delete_category exceptions
@@ -293,15 +293,12 @@ TEST(ControllerTest, SubmitCategoryTest) {
     int userToken = controller.get_userToken();
     Board board = controller.create_game("Alice", userToken);
 
-    // Create a category and submit a value for it
-    board = controller.create_category(board.get_id(), userToken, "Animals");
-
     // Start the game
     board = controller.start_game(board.get_id(), userToken);
 
     char currentLetter = board.get_currentLetter();
 
-    controller.submit_category(board.get_id(), userToken, "Animals", std::to_string(currentLetter));
+    controller.submit_category(board.get_id(), userToken, "Stadt", std::to_string(currentLetter));
 
     board = controller.get_game(board.get_id(), userToken);
 
