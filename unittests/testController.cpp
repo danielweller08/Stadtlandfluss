@@ -10,8 +10,8 @@ TEST(ControllerTest, GetGamesTest) {
     int userToken1 = controller.get_userToken();
     int userToken2 = controller.get_userToken();
     // Create two games and check if they are returned by get_games
-    Board board = controller.create_game("Alice", userToken1);
-    Board board_ = controller.create_game("Bob", userToken2);
+    Board board1 = controller.create_game("Alice", userToken1);
+    Board board2 = controller.create_game("Bob", userToken2);
     vector<Board> games = controller.get_games();
     EXPECT_EQ(2, games.size());
 }
@@ -175,9 +175,9 @@ TEST(ControllerTest, StopGameTest) {
     board = controller.start_game(board.get_id(), userToken);
 
     char currentLetter = board.get_currentLetter();
-    controller.submit_category(board.get_id(), userToken, "Stadt", std::to_string(currentLetter));
-    controller.submit_category(board.get_id(), userToken, "Land", std::to_string(currentLetter));
-    controller.submit_category(board.get_id(), userToken, "Fluss", std::to_string(currentLetter));
+    controller.submit_category(board.get_id(), userToken, "Stadt", std::string(1, currentLetter));
+    controller.submit_category(board.get_id(), userToken, "Land", std::string(1, currentLetter));
+    controller.submit_category(board.get_id(), userToken, "Fluss", std::string(1, currentLetter));
     // Stop the game
     board = controller.stop_game(board.get_id(), userToken);
 
@@ -298,7 +298,7 @@ TEST(ControllerTest, SubmitCategoryTest) {
 
     char currentLetter = board.get_currentLetter();
 
-    controller.submit_category(board.get_id(), userToken, "Stadt", std::to_string(currentLetter));
+    controller.submit_category(board.get_id(), userToken, "Stadt", std::string(1, currentLetter));
 
     board = controller.get_game(board.get_id(), userToken);
 
@@ -311,7 +311,7 @@ TEST(ControllerTest, SubmitCategoryTest) {
             for(auto name : elem.second) {
                 if(name.first == "Alice") {
                     for(auto category : name.second) {
-                        if(category.second == std::to_string(currentLetter)) {
+                        if(category.second == std::string(1, currentLetter)) {
                             findValue = true;
                         }
                     }

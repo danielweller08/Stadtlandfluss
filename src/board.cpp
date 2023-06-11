@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 #include <algorithm>
+#include <chrono>
 
 using namespace std;
 
@@ -85,10 +86,11 @@ namespace StadtLandFluss {
         // Remove the new letter from the list.
         _letters.erase(itActiveLetter);
 
-        // TODO: Timer.
-
         // Update the status.
         _status = BoardStatus::Spielen;
+
+        // Start the timer.
+        _startTime = std::chrono::steady_clock::now();
     }
 
     void Board::stop(string userName) {
@@ -130,9 +132,16 @@ namespace StadtLandFluss {
         if (value[0] != _currentLetter) {
             throw invalid_argument("Dein Eintrag beginnt nicht mit dem korrekten Buchstaben.");
         }
-
-        // Insert the category value.
-        _data[_currentLetter][userName][category] = value;
+        
+        // Check if the user is adding new category within the time limit. If not change _status to "Bewerten".
+        std::chrono::steady_clock::time_point momentOfSubmittingACategory = std::chrono::steady_clock::now();
+        std::chrono::duration<double> measuredDuration = momentOfSubmittingACategory - _startTime;
+        std::chrono::steady_clock::time_point endTime = _startTime + std::chrono::seconds(_settings.timeLimit);
+        if (measuredDuration > std::chrono::duration<double>(endTime - _startTime)) {
+            _status = BoardStatus::Bewerten;  
+        } else {
+            _data[_currentLetter][userName][category] = value;
+        } 
     }
 
     void Board::add_category(string category) {
