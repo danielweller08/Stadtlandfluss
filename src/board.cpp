@@ -1,5 +1,5 @@
 #include <stadt_land_fluss/board.hpp>
-
+#include <iostream>
 #include <stdexcept>
 #include <algorithm>
 
@@ -50,7 +50,7 @@ namespace StadtLandFluss {
         _settings = settings;
     }
 
-    map<char,map<string,map<string,string>>> Board::get_data() { return _data; }
+    map<char, map<string, map<string, pair<string, std::vector<bool>>>>>  Board::get_data() { return _data; }
 
     vector<string> Board::get_categories() { return _categories; }
 
@@ -126,7 +126,7 @@ namespace StadtLandFluss {
         }
 
         // Insert the category value.
-        _data[_currentLetter][userName][category] = value;
+        _data[_currentLetter][userName][category] = pair<string, vector<bool>>(value, {});
     }
 
     void Board::add_category(string category) {
@@ -152,9 +152,18 @@ namespace StadtLandFluss {
         if(_status != BoardStatus::Bewerten) {
             throw invalid_argument("Die Kategorien können nicht zu diesem Zeitpunkt bewertet werden.");
         }
-        
 
-        // Player votes on one category of one player
+        // Check if there are any votes left
+        if(_data[_currentLetter][userName][category].second.size() > _players.size()) {
+            throw invalid_argument("Alle Kategorien wurden schon bewertet.");
+        }
+
+        //_data[_currentLetter][userName][category].second.size()
+        std::cout << "Die Anzahl von Votes sind:  " << to_string(_data[_currentLetter][userName][category].second.size()) + "\n";
+        std::cout << _players.size();
+
+        // Player votes with given boolean value
+        _data[_currentLetter][userName][category].second.push_back(value);
 
         // Calls rate method when all of the votes are finished
     }

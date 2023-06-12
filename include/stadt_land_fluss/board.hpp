@@ -63,7 +63,7 @@ namespace StadtLandFluss {
 
             /// @brief Gets the boards data.
             /// @return The boards data.
-            map<char, map<string, map<string, string>>> get_data();
+            map<char, map<string, map<string, pair<string, std::vector<bool>>>>> get_data();
 
             /// @brief Gets the boards categories.
             /// @return The boards categories.
@@ -115,7 +115,7 @@ namespace StadtLandFluss {
             /// @brief Board settings.
             BoardSettings _settings;
             /// @brief Board data.
-            map<char, map<string, map<string, string>>> _data;
+            map<char, map<string, map<string, pair<string, std::vector<bool>>>>> _data;
             /// @brief Categories.
             vector<string> _categories;
             /// @brief Player names and their scores.
