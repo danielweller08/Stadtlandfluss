@@ -154,12 +154,9 @@ namespace StadtLandFluss {
         }
 
         // Checks if there are any votes left
-        if(_data[_currentLetter][userName][category].second.size() > _players.size()) {
-            throw invalid_argument("Alle Kategorien wurden schon bewertet.");
+        if(_data[_currentLetter][userName][category].second.size() > _players.size()-1) {
+            throw invalid_argument("Kategorie wurde schon von allen bewertet.");
         }
-
-        //_data[_currentLetter][userName][category].second.size()
-        
 
         // Given boolean value is pushed into the bool array of the player that gets voted on
         _data[_currentLetter][userName][category].second.push_back(value);
@@ -195,44 +192,16 @@ namespace StadtLandFluss {
                         number_upvotes += 1;
                     }
                 }
-                std::cout << "Die Anzahl von Votes sind:  " << to_string(_data[_currentLetter][player.first][category].second.size()) + "\n";
-                std::cout << "Anzahl von Upvotes sind: " << number_upvotes << "\n";
 
                 // Wenn Anzahl von Upvotes mindestens 50%, gilt die Kategorie
                 int num_players = _players.size() -1;
                 if( (num_players - number_upvotes) <= (num_players/2)) {
                     
                     _players[player.first] += 10;
-
-                    // Setzen des votes Arrays auf ein Eintrag mit true
-                    _data[_currentLetter][player.first][category].second = {true};
-                    std::cout << "Kategorie " << _data[_currentLetter][player.first][category].first << " zählt. \n";
-                }
-                // Nicht genügend viele Upvotes
-                else {
-                    // Setzen des votes Arrays auf ein Eintrag mit false
-                    _data[_currentLetter][player.first][category].second = {false};
-                    std::cout << "Kategorie " << _data[_currentLetter][player.first][category].first << " zählt nicht. \n";
                 }
                 // ZUrücksetzen der Upvotes pro Kategorie
                 number_upvotes = 0;
             }
-            std::cout << "\n";
        }
-
-    
-       
-       // -> In arr_category von bool reinschreiben [true, true, false], arr von punkten = [0,0,0]
-       // Eintrag überprüfen auf 2), in dem man durchiteratiert und auf gleichheit prüft. Wenn gleich -> arr_punkte[eintrag]=(5)
-       //                                                                                 Else -> arr_punkte[eintrag] = 10
-       // in for schleife punkte aufsummieren
-    }
-
-    void Board::voting() {
-        for(auto& category: _categories ) {
-            // for (auto& player: _players) {
-            //     if(_data[_currentLetter][player.first][category].first() )
-            // } 
-        }
-    }
+}
 }

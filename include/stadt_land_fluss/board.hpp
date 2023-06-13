@@ -109,9 +109,6 @@ namespace StadtLandFluss {
             /// @brief After voting points get added up and assigned to the players' score
             void rate_players();
 
-            // Hilfsmethode
-            void voting();
-
         private:
             /// @brief Id of the board. Equivalent to gameId.
             int _id;
@@ -120,6 +117,7 @@ namespace StadtLandFluss {
             /// @brief Board settings.
             BoardSettings _settings;
             /// @brief Board data.
+            /// @remark currentLetter, username, category, (submitted_category, arr_bool)
             map<char, map<string, map<string, pair<string, std::vector<bool>>>>> _data;
             /// @brief Categories.
             vector<string> _categories;
