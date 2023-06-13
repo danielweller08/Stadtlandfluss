@@ -106,10 +106,11 @@ namespace StadtLandFluss {
             void vote(string userName, string category, bool value);
         
 
-            /// @brief After voting each player rates each other round after round and adds up their points
-            /// @return Score of current round
-            int rate_players();
+            /// @brief After voting points get added up and assigned to the players' score
+            void rate_players();
 
+            // Hilfsmethode
+            void voting();
 
         private:
             /// @brief Id of the board. Equivalent to gameId.

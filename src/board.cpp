@@ -161,49 +161,78 @@ namespace StadtLandFluss {
         //_data[_currentLetter][userName][category].second.size()
         
 
-        // Player votes with given boolean value
+        // Given boolean value is pushed into the bool array of the player that gets voted on
         _data[_currentLetter][userName][category].second.push_back(value);
-
-        std::cout << "Die Anzahl von Votes sind:  " << to_string(_data[_currentLetter][userName][category].second.size()) + "\n";
-        std::cout << "Die Anzahl von Spielern sind:  " << to_string(_players.size()) + "\n";
     }
 
-    int Board::rate_players() {
+    void Board::rate_players() {
         /*
            In data stehen die guesses der einzelnen User drinnen -> Map(category of player, array<bools>)
-           Auswertung: 1) Kein Punkt wenn Buchstabe nicht mit guess übereinstimmt oder Eintrag leer
-                       2) 5 Punkte bei gleichem guess und durch votes gültig
+           Auswertung: 2) 5 Punkte bei gleichem guess und durch votes gültig
                        3) 10 Punkte für alleinigen guess und durch votes gültig
 
            Wird in _players mit neuem Punktestand aktualisiert
         */
 
-       //_data[_currentLetter][userName][category].second.size();
+        //std::vector<std::string> players;
 
-        std::vector<std::string> players;
-       for (auto& player: _players) {
-            //for(auto )
-            players.push_back(player.first);
-            std::cout << "Spieler in Runde sind:" << player.first << ", ";
-            std::cout << _currentLetter;
+        map<string, string> player_category;
 
-            // Schleifendurchgang durch jede Kategorie und Spielernamen
-            //_data[_currentLetter][players[0]][category].second
+        for (auto& player: _players) {
+        std::cout << "Spieler: " << player.first << "\n ";
+        int number_upvotes = 0;
+            for(auto& category: _categories ) {
+                //players.push_back(player.first);
+                
+                // Schleifendurchgang durch jede Kategorie und Spielernamen
 
+                // Schreiben der votes von bools in ein neues Array zum Rechnen
+                std::vector<bool> arr_votes = _data[_currentLetter][player.first][category].second;
+
+                // Wenn vote true ist, wird aufsummiert
+                for(bool votes: arr_votes) {
+                    if(votes) {
+                        number_upvotes += 1;
+                    }
+                }
+                std::cout << "Die Anzahl von Votes sind:  " << to_string(_data[_currentLetter][player.first][category].second.size()) + "\n";
+                std::cout << "Anzahl von Upvotes sind: " << number_upvotes << "\n";
+
+                // Wenn Anzahl von Upvotes mindestens 50%, gilt die Kategorie
+                int num_players = _players.size() -1;
+                if( (num_players - number_upvotes) <= (num_players/2)) {
+                    
+                    _players[player.first] += 10;
+
+                    // Setzen des votes Arrays auf ein Eintrag mit true
+                    _data[_currentLetter][player.first][category].second = {true};
+                    std::cout << "Kategorie " << _data[_currentLetter][player.first][category].first << " zählt. \n";
+                }
+                // Nicht genügend viele Upvotes
+                else {
+                    // Setzen des votes Arrays auf ein Eintrag mit false
+                    _data[_currentLetter][player.first][category].second = {false};
+                    std::cout << "Kategorie " << _data[_currentLetter][player.first][category].first << " zählt nicht. \n";
+                }
+                // ZUrücksetzen der Upvotes pro Kategorie
+                number_upvotes = 0;
+            }
+            std::cout << "\n";
        }
 
-        
-
-
-        // Add the user with a score of 0.
-        //_players[userName] = 0;
-
-       // Votes von anderen usern aufaddieren -> Mehrheit von true's gewinnt
-       // -> In arr von bool reinschreiben [true, true, false], arr von punkten = [0,0,0]
+    
+       
+       // -> In arr_category von bool reinschreiben [true, true, false], arr von punkten = [0,0,0]
        // Eintrag überprüfen auf 2), in dem man durchiteratiert und auf gleichheit prüft. Wenn gleich -> arr_punkte[eintrag]=(5)
        //                                                                                 Else -> arr_punkte[eintrag] = 10
        // in for schleife punkte aufsummieren
-       // Ergebnis returnen
-       return 0;
+    }
+
+    void Board::voting() {
+        for(auto& category: _categories ) {
+            // for (auto& player: _players) {
+            //     if(_data[_currentLetter][player.first][category].first() )
+            // } 
+        }
     }
 }
