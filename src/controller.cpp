@@ -226,6 +226,11 @@ namespace StadtLandFluss {
     }
 
     Board Controller::rate(int gameId, int userToken) {
+        // Check if user is assigned to the game.
+        if (!userIsAssigned(gameId, userToken)) {
+            throw invalid_argument("Du bist diesem Spiel noch nicht beigetreten.");
+        }
+
         _games[gameId].rate_players();
         return _games[gameId];
     }

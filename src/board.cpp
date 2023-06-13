@@ -90,7 +90,7 @@ namespace StadtLandFluss {
         _status = BoardStatus::Spielen;
 
         // Start the timer.
-        _startTime = std::chrono::steady_clock::now();
+        _startTime = std::chrono::system_clock::now();
     }
 
     void Board::stop(string userName) {
@@ -134,9 +134,9 @@ namespace StadtLandFluss {
         }
         
         // Check if the user is adding new category within the time limit. If not change _status to "Bewerten".
-        std::chrono::steady_clock::time_point momentOfSubmittingACategory = std::chrono::steady_clock::now();
+        std::chrono::system_clock::time_point momentOfSubmittingACategory = std::chrono::system_clock::now();
         std::chrono::duration<double> measuredDuration = momentOfSubmittingACategory - _startTime;
-        std::chrono::steady_clock::time_point endTime = _startTime + std::chrono::seconds(_settings.timeLimit);
+        std::chrono::system_clock::time_point endTime = _startTime + std::chrono::seconds(_settings.timeLimit);
         if (measuredDuration > std::chrono::duration<double>(endTime - _startTime)) {
             _status = BoardStatus::Bewerten;  
         } else {
@@ -218,6 +218,10 @@ namespace StadtLandFluss {
                 // ZUrücksetzen der Upvotes pro Kategorie
                 number_upvotes = 0;
             }
-       }
-}
+        }
+    }
+
+    vector<char> Board::get_letters() { return _letters; }
+
+    std::chrono::system_clock::time_point Board::get_startTime() { return _startTime; }
 }

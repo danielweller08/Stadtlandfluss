@@ -20,6 +20,9 @@ include_directories(include)
 # Füge externe Includes hinzu
 include_directories(external)
 
+
+find_package(pybind11 REQUIRED)
+
 # Sammle die Quelldateien
 file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.cpp)
 
@@ -28,6 +31,17 @@ add_executable(demo_cpp
   examples/demo_cpp.cpp
   ${SRC_FILES}
 )
+
+# Demo pybind
+pybind11_add_module(stadt_land_fluss
+  examples/demo_pybind.cpp
+  ${SRC_FILES}
+)
+
+# Installiere die Bibliothek
+install(TARGETS stadt_land_fluss
+  COMPONENT python
+  LIBRARY DESTINATION "${PROJECT_SOURCE_DIR}/extra")
 
 # Use CMakes FetchContent
 include(FetchContent)
