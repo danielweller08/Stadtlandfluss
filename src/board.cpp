@@ -105,12 +105,6 @@ namespace StadtLandFluss {
             || _data[_currentLetter][userName].size() < _categories.size()) {
             throw invalid_argument("Um eine Runde beenden zu können, müssen alle Kategorien ausgefüllt worden sein.");
         }
-
-        // Check if there are no more letters or the amount of rounds is over.
-        if (_letters.size() == 0 || _settings.roundsAmount - _currentRound == 0) {
-            // Update to the results status.
-            _status = BoardStatus::Ergebnisse;
-        }
         else {
             // Update to the voting status.
             _status = BoardStatus::Bewerten;
@@ -178,7 +172,7 @@ namespace StadtLandFluss {
             throw invalid_argument("Die Kategorien können nicht zu diesem Zeitpunkt bewertet werden.");
         }
 
-        // Checks if there are any votes left
+        // Checks if the category was evaluated
         if(_data[_currentLetter][userName][category].second.size() > _players.size()-1) {
             throw invalid_argument("Kategorie wurde schon von allen bewertet.");
         }
@@ -189,33 +183,39 @@ namespace StadtLandFluss {
 
     void Board::rate_players() {
 
-        map<string, string> player_category;
+        // Check if rating of players can be done.
+        if (_status != BoardStatus::Bewerten) {
+            throw invalid_argument("Das Spiel kann grade nicht bewertet werden.");
 
+        // Check if there are no more letters or the amount of rounds is over.
+        if (_letters.size() == 0 || _settings.roundsAmount - _currentRound == 0) {
+            // Update to the results status.
+            _status = BoardStatus::Ergebnisse;
+        }
+
+        // Loop through each player
         for (auto& player: _players) {
-        std::cout << "Spieler: " << player.first << "\n ";
         int number_upvotes = 0;
+            // Loop through each category 
             for(auto& category: _categories ) {
-                //players.push_back(player.first);
                 
-                // Schleifendurchgang durch jede Kategorie und Spielernamen
-
-                // Schreiben der votes von bools in ein neues Array zum Rechnen
+                // Write the votes of bool in new array 
                 std::vector<bool> arr_votes = _data[_currentLetter][player.first][category].second;
 
-                // Wenn vote true ist, wird aufsummiert
+                // If vote true, sum the true vote up by one
                 for(bool votes: arr_votes) {
                     if(votes) {
                         number_upvotes += 1;
                     }
                 }
 
-                // Wenn Anzahl von Upvotes mindestens 50%, gilt die Kategorie
+                // If number of Upvotes at least 50%, category is considered good
                 int num_players = _players.size() -1;
                 if( (num_players - number_upvotes) <= (num_players/2)) {
                     
                     _players[player.first] += 10;
                 }
-                // ZUrücksetzen der Upvotes pro Kategorie
+                // Set back of upvotes per category
                 number_upvotes = 0;
             }
         }
