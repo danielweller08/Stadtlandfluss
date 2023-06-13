@@ -179,15 +179,6 @@ namespace StadtLandFluss {
     }
 
     void Board::rate_players() {
-        /*
-           In data stehen die guesses der einzelnen User drinnen -> Map(category of player, array<bools>)
-           Auswertung: 2) 5 Punkte bei gleichem guess und durch votes gültig
-                       3) 10 Punkte für alleinigen guess und durch votes gültig
-
-           Wird in _players mit neuem Punktestand aktualisiert
-        */
-
-        //std::vector<std::string> players;
 
         map<string, string> player_category;
 
