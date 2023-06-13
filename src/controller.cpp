@@ -213,10 +213,6 @@ namespace StadtLandFluss {
         if (!userIsAssigned(gameId, userToken)) {
             throw invalid_argument("Du bist diesem Spiel noch nicht beigetreten.");
         }
-
-        // Falsch weil übergebene Spieler nicht derjenige ist, der wählt, sondern der, der bewertet wird 
-        //_games[gameId].vote(_players_games[userToken].second, category, value);
-
         
         _games[gameId].vote(username_vote, category, value);
 

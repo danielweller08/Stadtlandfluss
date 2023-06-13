@@ -314,7 +314,7 @@ TEST(ControllerTest, SubmitCategoryTest) {
             for(auto name : elem.second) {
                 if(name.first == "Alice") {
                     for(auto category : name.second) {
-                        if(category.second == std::to_string(currentLetter)) {
+                        if(category.first.substr(0,1) == std::to_string(1, currentLetter)) {
                             findValue = true;
                         }
                     }
