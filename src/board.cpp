@@ -181,13 +181,18 @@ namespace StadtLandFluss {
        //_data[_currentLetter][userName][category].second.size();
 
         std::vector<std::string> players;
-       for (auto player: _players) {
+       for (auto& player: _players) {
+            //for(auto )
             players.push_back(player.first);
             std::cout << "Spieler in Runde sind:" << player.first << ", ";
+            std::cout << _currentLetter;
+
+            // Schleifendurchgang durch jede Kategorie und Spielernamen
+            //_data[_currentLetter][players[0]][category].second
+
        }
 
-
-       
+        
 
 
         // Add the user with a score of 0.
