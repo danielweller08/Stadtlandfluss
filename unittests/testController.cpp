@@ -10,8 +10,8 @@ TEST(ControllerTest, GetGamesTest) {
     int userToken1 = controller.get_userToken();
     int userToken2 = controller.get_userToken();
     // Create two games and check if they are returned by get_games
-    Board board = controller.create_game("Alice", userToken1);
-    Board board_ = controller.create_game("Bob", userToken2);
+    Board board1 = controller.create_game("Alice", userToken1);
+    Board board2 = controller.create_game("Bob", userToken2);
     vector<Board> games = controller.get_games();
     EXPECT_EQ(2, games.size());
 }
@@ -173,11 +173,11 @@ TEST(ControllerTest, StopGameTest) {
     
     // Start the game
     board = controller.start_game(board.get_id(), userToken);
-    board = controller.create_category(board.get_id(), userToken, "Animals");
-    EXPECT_EQ(1, board.get_categories().size());
 
-    controller.submit_category(board.get_id(), userToken, "Animals", "Tiger");
-
+    char currentLetter = board.get_currentLetter();
+    controller.submit_category(board.get_id(), userToken, "Stadt", std::string(1, currentLetter));
+    controller.submit_category(board.get_id(), userToken, "Land", std::string(1, currentLetter));
+    controller.submit_category(board.get_id(), userToken, "Fluss", std::string(1, currentLetter));
     // Stop the game
     board = controller.stop_game(board.get_id(), userToken);
 
@@ -224,13 +224,13 @@ TEST(ControllerTest, CreateCategoryTest) {
     // Create a game with 0 categories
     int userToken = controller.get_userToken();
     Board board = controller.create_game("Alice", userToken);
-    EXPECT_EQ(0, board.get_categories().size());
+    EXPECT_EQ(3, board.get_categories().size());
 
     // Create a new category
     board = controller.create_category(board.get_id(), userToken, "Animals");
 
     // Ensure the category is created
-    EXPECT_EQ(1, board.get_categories().size());
+    EXPECT_EQ(4, board.get_categories().size());
 }
 
 // Test create_category exceptions
@@ -261,14 +261,14 @@ TEST(ControllerTest, DeleteCategoryTest) {
     // Create a new category
     board = controller.create_category(board.get_id(), userToken, "Animals");
     // board.add_category("Animals");
-    EXPECT_EQ(1, board.get_categories().size());
+    EXPECT_EQ(4, board.get_categories().size());
 
     // Delete the category
     board = controller.delete_category(board.get_id(), userToken, "Animals");
     // board.remove_category("Animals");
     
     // Ensure the category is deleted
-    EXPECT_EQ(0, board.get_categories().size());
+    EXPECT_EQ(3, board.get_categories().size());
 }
 
 // Test delete_category exceptions
@@ -293,15 +293,12 @@ TEST(ControllerTest, SubmitCategoryTest) {
     int userToken = controller.get_userToken();
     Board board = controller.create_game("Alice", userToken);
 
-    // Create a category and submit a value for it
-    board = controller.create_category(board.get_id(), userToken, "Animals");
-
     // Start the game
     board = controller.start_game(board.get_id(), userToken);
 
     char currentLetter = board.get_currentLetter();
 
-    controller.submit_category(board.get_id(), userToken, "Animals", std::to_string(currentLetter));
+    controller.submit_category(board.get_id(), userToken, "Stadt", std::string(1, currentLetter));
 
     board = controller.get_game(board.get_id(), userToken);
 
@@ -314,8 +311,10 @@ TEST(ControllerTest, SubmitCategoryTest) {
             for(auto name : elem.second) {
                 if(name.first == "Alice") {
                     for(auto category : name.second) {
-                        if(category.first.substr(0,1) == std::to_string(1, currentLetter)) {
-                            findValue = true;
+                        if(category.first == "Stadt") {
+                            if (category.second.first == std::string(1, currentLetter)) {
+                                findValue = true;
+                            }
                         }
                     }
                 }

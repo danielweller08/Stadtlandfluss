@@ -4,6 +4,7 @@
 #include <map>
 #include <vector>
 #include <random>
+#include <chrono>
 
 using namespace std;
 
@@ -17,6 +18,11 @@ namespace StadtLandFluss {
     };
 
     struct BoardSettings {
+        const int &get_roundsAmount() const { return roundsAmount; }
+        const vector<char> &get_allowedLetters() const { return allowedLetters; }
+        const bool &get_endRoundManually() const { return endRoundManually; }
+        const int &get_timeLimit() const { return timeLimit; }
+
         int roundsAmount;
         vector<char> allowedLetters;
         bool endRoundManually;
@@ -73,9 +79,17 @@ namespace StadtLandFluss {
             /// @return The current letter.
             char get_currentLetter();
 
+            /// @brief Gets the letters.
+            /// @return The letters.
+            vector<char> get_letters();
+
             /// @brief Gets the boards current round.
             /// @return The current round.
             int get_currentRound();
+
+            /// @brief Gets the start time.
+            /// @return The start time.
+            std::chrono::system_clock::time_point get_startTime();
 
             /// @brief Starts or continues the game.
             /// @param rndGen The random number generator to get a new letter from.
@@ -129,5 +143,7 @@ namespace StadtLandFluss {
             char _currentLetter;
             /// @brief Number of the current round.
             int _currentRound;
+            /// @brief Time point when game is started.
+            std::chrono::system_clock::time_point _startTime;           
     };
 }

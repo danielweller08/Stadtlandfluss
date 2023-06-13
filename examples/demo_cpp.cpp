@@ -28,16 +28,16 @@ using namespace StadtLandFluss;
         int gameid_1 = board.get_id();
 
          // Users join the game
-        controller.join_game(gameid_1, name_player2, userToken_player2);
-        controller.join_game(gameid_1, name_player3, userToken_player3);
-        
-        // Runde 1 startet
-        controller.start_game(gameid_1, userToken_player1);
+        board = controller.join_game(gameid_1, name_player2, userToken_player2);
+        board = controller.join_game(gameid_1, name_player3, userToken_player3);
 
         // Adding categories
-        controller.create_category(gameid_1, userToken_player1, "Stadt");
-        controller.create_category(gameid_1, userToken_player1, "Land");
-        board = controller.create_category(gameid_1, userToken_player1, "Fluss");
+        // board = controller.create_category(gameid_1, userToken_player1, "Stadt");
+        // board = controller.create_category(gameid_1, userToken_player1, "Land");
+        // board = controller.create_category(gameid_1, userToken_player1, "Fluss");
+
+        // Runde 1 startet
+        board = controller.start_game(gameid_1, userToken_player1);
 
         std::cout << "Die Kategorien sind:\n";
 
@@ -54,48 +54,48 @@ using namespace StadtLandFluss;
 
         // Tippen beginnt
 
-        controller.submit_category(gameid_1, userToken_player1, "Stadt", "Nottingham");
-        controller.submit_category(gameid_1, userToken_player1, "Land", "Niederlande");
-        controller.submit_category(gameid_1, userToken_player1, "Fluss", "Neckar");
+        board = controller.submit_category(gameid_1, userToken_player1, "Stadt", std::string(1, curr_letter));
+        board = controller.submit_category(gameid_1, userToken_player1, "Land", std::string(1, curr_letter));
+        board = controller.submit_category(gameid_1, userToken_player1, "Fluss", std::string(1, curr_letter));
 
-        controller.submit_category(gameid_1, userToken_player2, "Stadt", "Nürnberg");
-        controller.submit_category(gameid_1, userToken_player2, "Land", "Niederlande");
-        controller.submit_category(gameid_1, userToken_player2, "Fluss", "");
+        board = controller.submit_category(gameid_1, userToken_player2, "Stadt", std::string(1, curr_letter));
+        board = controller.submit_category(gameid_1, userToken_player2, "Land", std::string(1, curr_letter));
+        board = controller.submit_category(gameid_1, userToken_player2, "Fluss", std::string(1, curr_letter));
 
-        controller.submit_category(gameid_1, userToken_player3, "Stadt", "");
-        controller.submit_category(gameid_1, userToken_player3, "Land", "Nigeria");
-        controller.submit_category(gameid_1, userToken_player3, "Fluss", "Nil");
+        board = controller.submit_category(gameid_1, userToken_player3, "Stadt", std::string(1, curr_letter));
+        board = controller.submit_category(gameid_1, userToken_player3, "Land", std::string(1, curr_letter));
+        board = controller.submit_category(gameid_1, userToken_player3, "Fluss", std::string(1, curr_letter));
  
-        controller.stop_game(gameid_1, userToken_player1);     // Kein Spieler kann mehr Kategorien schreiben
+        board = controller.stop_game(gameid_1, userToken_player1);     // Kein Spieler kann mehr Kategorien schreiben
 
         // Voting beginnt
 
         // Rate player_1
 
-        controller.vote(gameid_1, userToken_player1, name_player1, "Land", true);        // Upvote
-        controller.vote(gameid_1, userToken_player1, name_player1, "Fluss", true);      // Upvote
-        controller.vote(gameid_1, userToken_player1, name_player1, "Stadt", true);      // Upvote für Kategorie Stadt für player31
-        controller.vote(gameid_1, userToken_player2, name_player1, "Stadt", true);      // Upvote
-        controller.vote(gameid_1, userToken_player2, name_player1, "Land", true);      // Upvote
-        controller.vote(gameid_1, userToken_player2, name_player1, "Fluss", true);      //Upvote1
-        controller.vote(gameid_1, userToken_player3, name_player1, "Stadt", true);      // Upvote
-        controller.vote(gameid_1, userToken_player3, name_player1, "Land", true);      // Upvote
-        controller.vote(gameid_1, userToken_player3, name_player1, "Fluss", true);      // Upvote
+        board = controller.vote(gameid_1, userToken_player1, name_player1, "Land", true);        // Upvote
+        board = controller.vote(gameid_1, userToken_player1, name_player1, "Fluss", true);      // Upvote
+        board = controller.vote(gameid_1, userToken_player1, name_player1, "Stadt", true);      // Upvote für Kategorie Stadt für player31
+        board = controller.vote(gameid_1, userToken_player2, name_player1, "Stadt", true);      // Upvote
+        board = controller.vote(gameid_1, userToken_player2, name_player1, "Land", true);      // Upvote
+        board = controller.vote(gameid_1, userToken_player2, name_player1, "Fluss", true);      //Upvote1
+        board = controller.vote(gameid_1, userToken_player3, name_player1, "Stadt", true);      // Upvote
+        board = controller.vote(gameid_1, userToken_player3, name_player1, "Land", true);      // Upvote
+        board = controller.vote(gameid_1, userToken_player3, name_player1, "Fluss", true);      // Upvote
 
 
         // Rate player_2
 
-        controller.vote(gameid_1, userToken_player1, name_player2, "Stadt", true);      // Upvote für Kategorie Stadt für player2
-        controller.vote(gameid_1, userToken_player1, name_player2, "Land", true);        // Upvote
-        controller.vote(gameid_1, userToken_player1, name_player2, "Fluss", false);      // Downvote für Kategorie Stadt für player2
+        board = controller.vote(gameid_1, userToken_player1, name_player2, "Stadt", true);      // Upvote für Kategorie Stadt für player2
+        board = controller.vote(gameid_1, userToken_player1, name_player2, "Land", true);        // Upvote
+        board = controller.vote(gameid_1, userToken_player1, name_player2, "Fluss", false);      // Downvote für Kategorie Stadt für player2
 
-        controller.vote(gameid_1, userToken_player2, name_player2, "Stadt", true);      // Upvote
-        controller.vote(gameid_1, userToken_player2, name_player2, "Land", true);      // Upvote
-        controller.vote(gameid_1, userToken_player2, name_player2, "Fluss", false);      //Downvote
+        board = controller.vote(gameid_1, userToken_player2, name_player2, "Stadt", true);      // Upvote
+        board = controller.vote(gameid_1, userToken_player2, name_player2, "Land", true);      // Upvote
+        board = controller.vote(gameid_1, userToken_player2, name_player2, "Fluss", false);      //Downvote
 
-        controller.vote(gameid_1, userToken_player3, name_player2, "Stadt", true);      // Upvote
-        controller.vote(gameid_1, userToken_player3, name_player2, "Land", true);      // Upvote
-        controller.vote(gameid_1, userToken_player3, name_player2, "Fluss", false);      // Downvote
+        board = controller.vote(gameid_1, userToken_player3, name_player2, "Stadt", true);      // Upvote
+        board = controller.vote(gameid_1, userToken_player3, name_player2, "Land", true);      // Upvote
+        board = controller.vote(gameid_1, userToken_player3, name_player2, "Fluss", false);      // Downvote
 
         
         // Rating
@@ -115,19 +115,19 @@ using namespace StadtLandFluss;
         curr_letter = board.get_currentLetter();       // Buchstabe
         printf("Buchstabe: %c \n", curr_letter);
 
-        controller.submit_category(gameid_1, userToken_player1, "Stadt", "Berlin");
-        controller.submit_category(gameid_1, userToken_player1, "Land", "Brasilien");
-        controller.submit_category(gameid_1, userToken_player1, "Fluss", "");
+        board = controller.submit_category(gameid_1, userToken_player1, "Stadt", std::string(1, curr_letter));
+        board = controller.submit_category(gameid_1, userToken_player1, "Land", std::string(1, curr_letter));
+        board = controller.submit_category(gameid_1, userToken_player1, "Fluss", std::string(1, curr_letter));
 
-        controller.submit_category(gameid_1, userToken_player2, "Stadt", "");
-        controller.submit_category(gameid_1, userToken_player2, "Land", "Bulgarien");
-        controller.submit_category(gameid_1, userToken_player2, "Fluss", "");
+        board = controller.submit_category(gameid_1, userToken_player2, "Stadt", std::string(1, curr_letter));
+        board = controller.submit_category(gameid_1, userToken_player2, "Land", std::string(1, curr_letter));
+        board = controller.submit_category(gameid_1, userToken_player2, "Fluss", std::string(1, curr_letter));
 
-        controller.submit_category(gameid_1, userToken_player3, "Stadt", "");
-        controller.submit_category(gameid_1, userToken_player3, "Land", "Bangladesh");
-        controller.submit_category(gameid_1, userToken_player3, "Fluss", "Blauer Nil");
+        board = controller.submit_category(gameid_1, userToken_player3, "Stadt", std::string(1, curr_letter));
+        board = controller.submit_category(gameid_1, userToken_player3, "Land", std::string(1, curr_letter));
+        board = controller.submit_category(gameid_1, userToken_player3, "Fluss", std::string(1, curr_letter));
 
-        controller.stop_game(gameid_1, userToken_player1);
+        board = controller.stop_game(gameid_1, userToken_player1);
 
         // Voting starts
 
