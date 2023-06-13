@@ -14,9 +14,35 @@ except ImportError as e:
   exit(1)
 
 from stadt_land_fluss import Controller
+from stadt_land_fluss import Board
 import os
 from fastapi import FastAPI
+from pydantic import BaseModel
 import uvicorn
+
+def board_toJson(board: Board):
+   return {
+      "board": {
+         "id": board.get_id(),
+         "status": board.get_status().name,
+         "settings": {
+            "roundsAmount": board.get_settings().get_roundsAmount(),
+            "allowedLetters": board.get_settings().get_allowedLetters(),
+            "endRoundManually": board.get_settings().get_endRoundManually(),
+            "timeLimit": board.get_settings().get_timeLimit()
+         },
+         "data": board.get_data(),
+         "categories": board.get_categories(),
+         "players": board.get_players(),
+         "letters": board.get_letters(),
+         "currentLetter": board.get_currentLetter(),
+         "currentRound": board.get_currentRound(),
+         "startTime": board.get_startTime()
+      }
+   }
+
+class CreateGameRequest(BaseModel):
+    userName: str
 
 # Erstelle einen StadtLandFluss Controller
 controller = Controller()
@@ -35,6 +61,10 @@ async def get_userToken():
     return  {
        "userToken": controller.get_userToken()
     }
+
+@api.post("/games")
+async def create_game(request: CreateGameRequest, userToken: int):
+    return board_toJson(controller.create_game(request.userName, userToken))
 
 if __name__ == '__main__':
   this_python_file = os.path.basename(__file__)[:-3]
