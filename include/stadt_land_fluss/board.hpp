@@ -4,6 +4,7 @@
 #include <map>
 #include <vector>
 #include <random>
+#include <chrono>
 
 using namespace std;
 
@@ -118,5 +119,7 @@ namespace StadtLandFluss {
             char _currentLetter;
             /// @brief Number of the current round.
             int _currentRound;
+            /// @brief Time point when game is started.
+            std::chrono::steady_clock::time_point _startTime;           
     };
 }
