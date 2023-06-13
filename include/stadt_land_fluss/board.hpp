@@ -99,12 +99,16 @@ namespace StadtLandFluss {
             /// @param category The category to be removed.
             void remove_category(string category);
             
-            
+            /// @brief Player has one vote for every category of each player except itself
+            /// @param userName The name of the user.
+            /// @param category The category to be voted on.
+            /// @param value boolean value of the vote, yes for an upvote and no for a downvote.
             void vote(string userName, string category, bool value);
         
 
-            /// @brief Rates players each round and adds up their points
-            void rate();
+            /// @brief After voting each player rates each other round after round and adds up their points
+            /// @return Score of current round
+            int rate_players();
 
 
         private:

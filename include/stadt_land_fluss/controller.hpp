@@ -98,6 +98,10 @@ namespace StadtLandFluss {
             /// @param value A true value represents that player agrees on the player's answer, false disagrees
             Board vote(int gameId, int userToken, string username_vote, string category, bool value);
 
+
+            // Wird aufgerufen nach all den votings
+            Board rate(int gameId, int userToken);
+
         private:
             /// @brief Collection of lobbies and there gameIds.
             map<int, Board> _games;

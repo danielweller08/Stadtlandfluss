@@ -153,29 +153,52 @@ namespace StadtLandFluss {
             throw invalid_argument("Die Kategorien können nicht zu diesem Zeitpunkt bewertet werden.");
         }
 
-        // Check if there are any votes left
+        // Checks if there are any votes left
         if(_data[_currentLetter][userName][category].second.size() > _players.size()) {
             throw invalid_argument("Alle Kategorien wurden schon bewertet.");
         }
 
         //_data[_currentLetter][userName][category].second.size()
-        std::cout << "Die Anzahl von Votes sind:  " << to_string(_data[_currentLetter][userName][category].second.size()) + "\n";
-        std::cout << _players.size();
+        
 
         // Player votes with given boolean value
         _data[_currentLetter][userName][category].second.push_back(value);
 
-        // Calls rate method when all of the votes are finished
+        std::cout << "Die Anzahl von Votes sind:  " << to_string(_data[_currentLetter][userName][category].second.size()) + "\n";
+        std::cout << "Die Anzahl von Spielern sind:  " << to_string(_players.size()) + "\n";
     }
 
-    void Board::rate() {
+    int Board::rate_players() {
         /*
            In data stehen die guesses der einzelnen User drinnen -> Map(category of player, array<bools>)
-           Auswertung: - Kein Punkt wenn Buchstabe nicht mit guess übereinstimmt oder Eintrag leer
-                       - 5 Punkte bei gleichem guess und durch votes gültig
-                       - 10 Punkte für alleinigen guess und durch votes gültig
+           Auswertung: 1) Kein Punkt wenn Buchstabe nicht mit guess übereinstimmt oder Eintrag leer
+                       2) 5 Punkte bei gleichem guess und durch votes gültig
+                       3) 10 Punkte für alleinigen guess und durch votes gültig
 
            Wird in _players mit neuem Punktestand aktualisiert
         */
+
+       //_data[_currentLetter][userName][category].second.size();
+
+        std::vector<std::string> players;
+       for (auto player: _players) {
+            players.push_back(player.first);
+            std::cout << "Spieler in Runde sind:" << player.first << ", ";
+       }
+
+
+       
+
+
+        // Add the user with a score of 0.
+        //_players[userName] = 0;
+
+       // Votes von anderen usern aufaddieren -> Mehrheit von true's gewinnt
+       // -> In arr von bool reinschreiben [true, true, false], arr von punkten = [0,0,0]
+       // Eintrag überprüfen auf 2), in dem man durchiteratiert und auf gleichheit prüft. Wenn gleich -> arr_punkte[eintrag]=(5)
+       //                                                                                 Else -> arr_punkte[eintrag] = 10
+       // in for schleife punkte aufsummieren
+       // Ergebnis returnen
+       return 0;
     }
 }

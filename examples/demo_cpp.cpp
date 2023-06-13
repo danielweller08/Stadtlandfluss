@@ -68,7 +68,13 @@ using namespace StadtLandFluss;
  
         controller.stop_game(gameid_1, userToken_player1);     // Kein Spieler kann mehr Kategorien schreiben
 
-        controller.vote(gameid_1, userToken_player1, name_player2, "Stadt", true);
+        // Voting beginnt
+
+        controller.vote(gameid_1, userToken_player1, name_player2, "Stadt", true);      // Upvote für Kategorie Stadt für player2
+        controller.vote(gameid_1, userToken_player1, name_player2, "Land", true);        // Upvote
+        controller.vote(gameid_1, userToken_player1, name_player2, "Fluss", false);      // Downvote für Kategorie Stadt für player2
+
+        controller.rate(gameid_1, userToken_player1);
 
         // Runde 2 startet
         board = controller.start_game(gameid_1, userToken_player1);
@@ -91,6 +97,13 @@ using namespace StadtLandFluss;
         controller.submit_category(gameid_1, userToken_player3, "Fluss", "Blauer Nil");
 
         controller.stop_game(gameid_1, userToken_player1);
+
+        // Voting starts
+
+        
+
+
+
         
         controller.quit_game(gameid_1, userToken_player1);       // Ende des Spiels
         

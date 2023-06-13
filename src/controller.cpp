@@ -217,4 +217,9 @@ namespace StadtLandFluss {
         return _games[gameId];
 
     }
+
+    Board Controller::rate(int gameId, int userToken) {
+        _games[gameId].rate_players();
+        return _games[gameId];
+    }
 }
