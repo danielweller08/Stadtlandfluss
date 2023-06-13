@@ -1,5 +1,5 @@
 #include <stadt_land_fluss/board.hpp>
-
+#include <iostream>
 #include <stdexcept>
 #include <algorithm>
 #include <chrono>
@@ -52,7 +52,7 @@ namespace StadtLandFluss {
         _settings = settings;
     }
 
-    map<char,map<string,map<string,string>>> Board::get_data() { return _data; }
+    map<char, map<string, map<string, pair<string, std::vector<bool>>>>>  Board::get_data() { return _data; }
 
     vector<string> Board::get_categories() { return _categories; }
 
@@ -140,7 +140,7 @@ namespace StadtLandFluss {
         if (measuredDuration > std::chrono::duration<double>(endTime - _startTime)) {
             _status = BoardStatus::Bewerten;  
         } else {
-            _data[_currentLetter][userName][category] = value;
+            _data[_currentLetter][userName][category] = pair<string, vector<bool>>(value, {});
         } 
     }
 
@@ -172,4 +172,52 @@ namespace StadtLandFluss {
 
         _categories.erase(itCategory);
     }
+    void Board::vote(string userName, string category, bool value) {
+        // Checks if player is in voting phase
+        if(_status != BoardStatus::Bewerten) {
+            throw invalid_argument("Die Kategorien können nicht zu diesem Zeitpunkt bewertet werden.");
+        }
+
+        // Checks if there are any votes left
+        if(_data[_currentLetter][userName][category].second.size() > _players.size()-1) {
+            throw invalid_argument("Kategorie wurde schon von allen bewertet.");
+        }
+
+        // Given boolean value is pushed into the bool array of the player that gets voted on
+        _data[_currentLetter][userName][category].second.push_back(value);
+    }
+
+    void Board::rate_players() {
+
+        map<string, string> player_category;
+
+        for (auto& player: _players) {
+        std::cout << "Spieler: " << player.first << "\n ";
+        int number_upvotes = 0;
+            for(auto& category: _categories ) {
+                //players.push_back(player.first);
+                
+                // Schleifendurchgang durch jede Kategorie und Spielernamen
+
+                // Schreiben der votes von bools in ein neues Array zum Rechnen
+                std::vector<bool> arr_votes = _data[_currentLetter][player.first][category].second;
+
+                // Wenn vote true ist, wird aufsummiert
+                for(bool votes: arr_votes) {
+                    if(votes) {
+                        number_upvotes += 1;
+                    }
+                }
+
+                // Wenn Anzahl von Upvotes mindestens 50%, gilt die Kategorie
+                int num_players = _players.size() -1;
+                if( (num_players - number_upvotes) <= (num_players/2)) {
+                    
+                    _players[player.first] += 10;
+                }
+                // ZUrücksetzen der Upvotes pro Kategorie
+                number_upvotes = 0;
+            }
+       }
+}
 }

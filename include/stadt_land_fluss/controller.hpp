@@ -89,6 +89,19 @@ namespace StadtLandFluss {
             /// @param value The value of the entry.
             Board submit_category(int gameId, int userToken, string category, string value);
 
+
+            /// @brief Each player gets to vote on the guesses of the others players' answers with a yes or no
+            /// @param gameId The id of the game to vote on
+            /// @param userToken The token of the calling user
+            /// @param username_vote The name of the user to vote on
+            /// @param category The category of the entry to be voted on
+            /// @param value A true value represents that player agrees on the player's answer, false disagrees
+            Board vote(int gameId, int userToken, string username_vote, string category, bool value);
+
+
+            // Wird aufgerufen nach all den votings
+            Board rate(int gameId, int userToken);
+
         private:
             /// @brief Collection of lobbies and there gameIds.
             map<int, Board> _games;

@@ -64,7 +64,7 @@ namespace StadtLandFluss {
 
             /// @brief Gets the boards data.
             /// @return The boards data.
-            map<char, map<string, map<string, string>>> get_data();
+            map<char, map<string, map<string, pair<string, std::vector<bool>>>>> get_data();
 
             /// @brief Gets the boards categories.
             /// @return The boards categories.
@@ -99,6 +99,16 @@ namespace StadtLandFluss {
             /// @brief Removes a category.
             /// @param category The category to be removed.
             void remove_category(string category);
+            
+            /// @brief Player has one vote for every category of each player except itself
+            /// @param userName The name of the user.
+            /// @param category The category to be voted on.
+            /// @param value boolean value of the vote, yes for an upvote and no for a downvote.
+            void vote(string userName, string category, bool value);
+        
+
+            /// @brief After voting points get added up and assigned to the players' score
+            void rate_players();
 
         private:
             /// @brief Id of the board. Equivalent to gameId.
@@ -108,7 +118,8 @@ namespace StadtLandFluss {
             /// @brief Board settings.
             BoardSettings _settings;
             /// @brief Board data.
-            map<char, map<string, map<string, string>>> _data;
+            /// @remark currentLetter, username, category, (submitted_category, arr_bool)
+            map<char, map<string, map<string, pair<string, std::vector<bool>>>>> _data;
             /// @brief Categories.
             vector<string> _categories;
             /// @brief Player names and their scores.

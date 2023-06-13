@@ -68,6 +68,44 @@ using namespace StadtLandFluss;
  
         controller.stop_game(gameid_1, userToken_player1);     // Kein Spieler kann mehr Kategorien schreiben
 
+        // Voting beginnt
+
+        // Rate player_1
+
+        controller.vote(gameid_1, userToken_player1, name_player1, "Land", true);        // Upvote
+        controller.vote(gameid_1, userToken_player1, name_player1, "Fluss", true);      // Upvote
+        controller.vote(gameid_1, userToken_player1, name_player1, "Stadt", true);      // Upvote für Kategorie Stadt für player31
+        controller.vote(gameid_1, userToken_player2, name_player1, "Stadt", true);      // Upvote
+        controller.vote(gameid_1, userToken_player2, name_player1, "Land", true);      // Upvote
+        controller.vote(gameid_1, userToken_player2, name_player1, "Fluss", true);      //Upvote1
+        controller.vote(gameid_1, userToken_player3, name_player1, "Stadt", true);      // Upvote
+        controller.vote(gameid_1, userToken_player3, name_player1, "Land", true);      // Upvote
+        controller.vote(gameid_1, userToken_player3, name_player1, "Fluss", true);      // Upvote
+
+
+        // Rate player_2
+
+        controller.vote(gameid_1, userToken_player1, name_player2, "Stadt", true);      // Upvote für Kategorie Stadt für player2
+        controller.vote(gameid_1, userToken_player1, name_player2, "Land", true);        // Upvote
+        controller.vote(gameid_1, userToken_player1, name_player2, "Fluss", false);      // Downvote für Kategorie Stadt für player2
+
+        controller.vote(gameid_1, userToken_player2, name_player2, "Stadt", true);      // Upvote
+        controller.vote(gameid_1, userToken_player2, name_player2, "Land", true);      // Upvote
+        controller.vote(gameid_1, userToken_player2, name_player2, "Fluss", false);      //Downvote
+
+        controller.vote(gameid_1, userToken_player3, name_player2, "Stadt", true);      // Upvote
+        controller.vote(gameid_1, userToken_player3, name_player2, "Land", true);      // Upvote
+        controller.vote(gameid_1, userToken_player3, name_player2, "Fluss", false);      // Downvote
+
+        
+        // Rating
+        board = controller.rate(gameid_1, userToken_player1);
+
+        // Total score
+        for(auto player : board.get_players()) {
+            std::cout << "Punktzahl von " << player.first << " ist: " << player.second << "\n";
+        }      
+
 
         // Runde 2 startet
         board = controller.start_game(gameid_1, userToken_player1);
@@ -90,6 +128,13 @@ using namespace StadtLandFluss;
         controller.submit_category(gameid_1, userToken_player3, "Fluss", "Blauer Nil");
 
         controller.stop_game(gameid_1, userToken_player1);
+
+        // Voting starts
+
+        
+
+
+
         
         controller.quit_game(gameid_1, userToken_player1);       // Ende des Spiels
         
