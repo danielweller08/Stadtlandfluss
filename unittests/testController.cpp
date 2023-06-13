@@ -311,8 +311,10 @@ TEST(ControllerTest, SubmitCategoryTest) {
             for(auto name : elem.second) {
                 if(name.first == "Alice") {
                     for(auto category : name.second) {
-                        if(category.first.substr(0, 1) == std::string(1, currentLetter)) {
-                            findValue = true;
+                        if(category.first == "Stadt") {
+                            if (category.second.first == std::string(1, currentLetter)) {
+                                findValue = true;
+                            }
                         }
                     }
                 }
