@@ -195,28 +195,29 @@ namespace StadtLandFluss {
 
         // Loop through each player
         for (auto& player: _players) {
-        int number_upvotes = 0;
-            // Loop through each category 
-            for(auto& category: _categories ) {
-                
-                // Write the votes of bool in new array 
-                std::vector<bool> arr_votes = _data[_currentLetter][player.first][category].second;
-
-                // If vote true, sum the true vote up by one
-                for(bool votes: arr_votes) {
-                    if(votes) {
-                        number_upvotes += 1;
-                    }
-                }
-
-                // If number of Upvotes at least 50%, category is considered good
-                int num_players = _players.size() -1;
-                if( (num_players - number_upvotes) <= (num_players/2)) {
+            int number_upvotes = 0;
+                // Loop through each category 
+                for(auto& category: _categories ) {
                     
-                    _players[player.first] += 10;
+                    // Write the votes of bool in new array 
+                    std::vector<bool> arr_votes = _data[_currentLetter][player.first][category].second;
+
+                    // If vote true, sum the true vote up by one
+                    for(bool votes: arr_votes) {
+                        if(votes) {
+                            number_upvotes += 1;
+                        }
+                    }
+
+                    // If number of Upvotes at least 50%, category is considered good
+                    int num_players = _players.size() -1;
+                    if( (num_players - number_upvotes) <= (num_players/2)) {
+                        
+                        _players[player.first] += 10;
+                    }
+                    // Set back of upvotes per category
+                    number_upvotes = 0;
                 }
-                // Set back of upvotes per category
-                number_upvotes = 0;
             }
         }
     }

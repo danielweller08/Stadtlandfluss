@@ -23,6 +23,11 @@ namespace StadtLandFluss {
         const bool &get_endRoundManually() const { return endRoundManually; }
         const int &get_timeLimit() const { return timeLimit; }
 
+        void set_roundsAmount(int value) { roundsAmount = value; }
+        void set_allowedLetters(vector<char> value) { allowedLetters = value; }
+        void set_endRoundManually(bool value) { endRoundManually = value; }
+        void set_timeLimit(int value) { timeLimit = value; }
+
         int roundsAmount;
         vector<char> allowedLetters;
         bool endRoundManually;
