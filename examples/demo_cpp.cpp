@@ -58,13 +58,13 @@ using namespace StadtLandFluss;
         board = controller.submit_category(gameid_1, userToken_player1, "Land", std::string(1, curr_letter));
         board = controller.submit_category(gameid_1, userToken_player1, "Fluss", std::string(1, curr_letter));
 
-        board = controller.submit_category(gameid_1, userToken_player2, "Stadt", std::string(1, curr_letter));
-        board = controller.submit_category(gameid_1, userToken_player2, "Land", std::string(1, curr_letter));
-        board = controller.submit_category(gameid_1, userToken_player2, "Fluss", std::string(1, curr_letter));
+        // board = controller.submit_category(gameid_1, userToken_player2, "Stadt", std::string(1, curr_letter));
+        // board = controller.submit_category(gameid_1, userToken_player2, "Land", std::string(1, curr_letter));
+        // board = controller.submit_category(gameid_1, userToken_player2, "Fluss", std::string(1, curr_letter));
 
-        board = controller.submit_category(gameid_1, userToken_player3, "Stadt", std::string(1, curr_letter));
-        board = controller.submit_category(gameid_1, userToken_player3, "Land", std::string(1, curr_letter));
-        board = controller.submit_category(gameid_1, userToken_player3, "Fluss", std::string(1, curr_letter));
+        // board = controller.submit_category(gameid_1, userToken_player3, "Stadt", std::string(1, curr_letter));
+        // board = controller.submit_category(gameid_1, userToken_player3, "Land", std::string(1, curr_letter));
+        // board = controller.submit_category(gameid_1, userToken_player3, "Fluss", "");
  
         board = controller.stop_game(gameid_1, userToken_player1);     // Kein Spieler kann mehr Kategorien schreiben
 

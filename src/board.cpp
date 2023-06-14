@@ -121,18 +121,19 @@ namespace StadtLandFluss {
         if (std::find(_categories.begin(), _categories.end(), category) == _categories.end()) {
             throw invalid_argument("Die Kategorie '" + category + "' existiert nicht.");
         }
-
-        // Check if the starting letter matches.
-        if (value[0] != _currentLetter) {
-            throw invalid_argument("Dein Eintrag beginnt nicht mit dem korrekten Buchstaben.");
-        }
         
         // Check if the user is adding new category within the time limit. If not change _status to "Bewerten".
         std::chrono::system_clock::time_point momentOfSubmittingACategory = std::chrono::system_clock::now();
         std::chrono::duration<double> measuredDuration = momentOfSubmittingACategory - _startTime;
         std::chrono::system_clock::time_point endTime = _startTime + std::chrono::seconds(_settings.timeLimit);
+        
         if (measuredDuration > std::chrono::duration<double>(endTime - _startTime)) {
-            _status = BoardStatus::Bewerten;  
+            _status = BoardStatus::Bewerten;
+         // Allow empty entries and check if the starting letter matches.  
+        } else if (value[0] == (char) 0) {
+            _data[_currentLetter][userName][category] = pair<string, vector<bool>>(value, {});
+        } else if (value[0] != _currentLetter) {
+            throw invalid_argument("Dein Eintrag beginnt nicht mit dem korrekten Buchstaben.");
         } else {
             _data[_currentLetter][userName][category] = pair<string, vector<bool>>(value, {});
         } 
@@ -176,9 +177,14 @@ namespace StadtLandFluss {
         if(_data[_currentLetter][userName][category].second.size() > _players.size()-1) {
             throw invalid_argument("Kategorie wurde schon von allen bewertet.");
         }
-
+        
+        // Check if category is empty. If so set category bool to false
+        if(_data[_currentLetter][userName][category].first == "") {
+            _data[_currentLetter][userName][category].second.push_back(false);
+        } else {
         // Given boolean value is pushed into the bool array of the player that gets voted on
         _data[_currentLetter][userName][category].second.push_back(value);
+        }
     }
 
     void Board::rate_players() {
