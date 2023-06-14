@@ -21,7 +21,11 @@ PYBIND11_MODULE(stadt_land_fluss, m) {
     .def("get_roundsAmount", &BoardSettings::get_roundsAmount)
     .def("get_allowedLetters", &BoardSettings::get_allowedLetters)
     .def("get_endRoundManually", &BoardSettings::get_endRoundManually)
-    .def("get_timeLimit", &BoardSettings::get_timeLimit);
+    .def("get_timeLimit", &BoardSettings::get_timeLimit)
+    .def("set_roundsAmount", &BoardSettings::set_roundsAmount)
+    .def("set_allowedLetters", &BoardSettings::set_allowedLetters)
+    .def("set_endRoundManually", &BoardSettings::set_endRoundManually)
+    .def("set_timeLimit", &BoardSettings::set_timeLimit);
   
   py::class_<Controller>(m, "Controller")
     .def(py::init<>())
