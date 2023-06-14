@@ -213,6 +213,11 @@ namespace StadtLandFluss {
         if (!userIsAssigned(gameId, userToken)) {
             throw invalid_argument("Du bist diesem Spiel noch nicht beigetreten.");
         }
+
+        // Check if player is voting for himself.
+        if (_players_games[userToken].second == username_vote) {
+            throw invalid_argument("Du kannst nicht für dich selbst voten.");
+        }
         
         _games[gameId].vote(username_vote, category, value);
 

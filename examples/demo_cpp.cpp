@@ -72,30 +72,32 @@ using namespace StadtLandFluss;
 
         // Rate player_1
 
-        board = controller.vote(gameid_1, userToken_player1, name_player1, "Land", true);        // Upvote
-        board = controller.vote(gameid_1, userToken_player1, name_player1, "Fluss", true);      // Upvote
-        board = controller.vote(gameid_1, userToken_player1, name_player1, "Stadt", true);      // Upvote für Kategorie Stadt für player31
-        board = controller.vote(gameid_1, userToken_player2, name_player1, "Stadt", true);      // Upvote
-        board = controller.vote(gameid_1, userToken_player2, name_player1, "Land", true);      // Upvote
-        board = controller.vote(gameid_1, userToken_player2, name_player1, "Fluss", true);      //Upvote1
-        board = controller.vote(gameid_1, userToken_player3, name_player1, "Stadt", true);      // Upvote
-        board = controller.vote(gameid_1, userToken_player3, name_player1, "Land", true);      // Upvote
-        board = controller.vote(gameid_1, userToken_player3, name_player1, "Fluss", true);      // Upvote
+        board = controller.vote(gameid_1, userToken_player2, name_player1, "Stadt", true);
+
+        // board = controller.vote(gameid_1, userToken_player1, name_player1, "Land", true);        // Upvote
+        // board = controller.vote(gameid_1, userToken_player1, name_player1, "Fluss", true);      // Upvote
+        // board = controller.vote(gameid_1, userToken_player1, name_player1, "Stadt", true);      // Upvote für Kategorie Stadt für player31
+        // board = controller.vote(gameid_1, userToken_player2, name_player1, "Stadt", true);      // Upvote
+        // board = controller.vote(gameid_1, userToken_player2, name_player1, "Land", true);      // Upvote
+        // board = controller.vote(gameid_1, userToken_player2, name_player1, "Fluss", true);      //Upvote1
+        // board = controller.vote(gameid_1, userToken_player3, name_player1, "Stadt", true);      // Upvote
+        // board = controller.vote(gameid_1, userToken_player3, name_player1, "Land", true);      // Upvote
+        // board = controller.vote(gameid_1, userToken_player3, name_player1, "Fluss", true);      // Upvote
 
 
         // Rate player_2
 
-        board = controller.vote(gameid_1, userToken_player1, name_player2, "Stadt", true);      // Upvote für Kategorie Stadt für player2
-        board = controller.vote(gameid_1, userToken_player1, name_player2, "Land", true);        // Upvote
-        board = controller.vote(gameid_1, userToken_player1, name_player2, "Fluss", false);      // Downvote für Kategorie Stadt für player2
+        // board = controller.vote(gameid_1, userToken_player1, name_player2, "Stadt", true);      // Upvote für Kategorie Stadt für player2
+        // board = controller.vote(gameid_1, userToken_player1, name_player2, "Land", true);        // Upvote
+        // board = controller.vote(gameid_1, userToken_player1, name_player2, "Fluss", false);      // Downvote für Kategorie Stadt für player2
 
-        board = controller.vote(gameid_1, userToken_player2, name_player2, "Stadt", true);      // Upvote
-        board = controller.vote(gameid_1, userToken_player2, name_player2, "Land", true);      // Upvote
-        board = controller.vote(gameid_1, userToken_player2, name_player2, "Fluss", false);      //Downvote
+        // board = controller.vote(gameid_1, userToken_player2, name_player2, "Stadt", true);      // Upvote
+        // board = controller.vote(gameid_1, userToken_player2, name_player2, "Land", true);      // Upvote
+        // board = controller.vote(gameid_1, userToken_player2, name_player2, "Fluss", false);      //Downvote
 
-        board = controller.vote(gameid_1, userToken_player3, name_player2, "Stadt", true);      // Upvote
-        board = controller.vote(gameid_1, userToken_player3, name_player2, "Land", true);      // Upvote
-        board = controller.vote(gameid_1, userToken_player3, name_player2, "Fluss", false);      // Downvote
+        // board = controller.vote(gameid_1, userToken_player3, name_player2, "Stadt", true);      // Upvote
+        // board = controller.vote(gameid_1, userToken_player3, name_player2, "Land", true);      // Upvote
+        // board = controller.vote(gameid_1, userToken_player3, name_player2, "Fluss", false);      // Downvote
 
         
         // Rating
