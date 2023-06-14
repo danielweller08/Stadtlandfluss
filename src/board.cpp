@@ -121,7 +121,7 @@ namespace StadtLandFluss {
         if (std::find(_categories.begin(), _categories.end(), category) == _categories.end()) {
             throw invalid_argument("Die Kategorie '" + category + "' existiert nicht.");
         }
-        
+
         // Check if the user is adding new category within the time limit. If not change _status to "Bewerten".
         std::chrono::system_clock::time_point momentOfSubmittingACategory = std::chrono::system_clock::now();
         std::chrono::duration<double> measuredDuration = momentOfSubmittingACategory - _startTime;
@@ -129,8 +129,11 @@ namespace StadtLandFluss {
         
         if (measuredDuration > std::chrono::duration<double>(endTime - _startTime)) {
             _status = BoardStatus::Bewerten;
-         // Allow empty entries and check if the starting letter matches.  
-        } else if (value[0] == (char) 0) {
+            throw invalid_argument("Die Zeit ist aufgelaufen, es können keine weiteren Einträge gemacht werden.");
+        }
+        
+        // Allow empty entries and check if the starting letter matches.  
+        if (value[0] == (char) 0) {
             _data[_currentLetter][userName][category] = pair<string, vector<bool>>(value, {});
         } else if (value[0] != _currentLetter) {
             throw invalid_argument("Dein Eintrag beginnt nicht mit dem korrekten Buchstaben.");
