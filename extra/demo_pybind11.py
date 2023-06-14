@@ -12,7 +12,6 @@ else:
 
 
 from stadt_land_fluss import Controller
-from stadt_land_fluss import Board
 import pydoc
 
 
