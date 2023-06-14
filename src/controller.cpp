@@ -59,7 +59,7 @@ namespace StadtLandFluss {
         maxGameId++;
 
         // Create the game.
-        _games[maxGameId] = Board();
+        _games[maxGameId] = Board(maxGameId);
 
         // Assign the calling user to it.
         _players_games[userToken] = pair(maxGameId, userName);
@@ -205,5 +205,33 @@ namespace StadtLandFluss {
             }
         }
         return userGameRelationFound;
+    }
+
+    Board Controller::vote(int gameId, int userToken, string username_vote, string category, bool value) {
+
+        // Check if user is assigned to the game.
+        if (!userIsAssigned(gameId, userToken)) {
+            throw invalid_argument("Du bist diesem Spiel noch nicht beigetreten.");
+        }
+
+        // Falsch weil übergebene Spieler nicht derjenige ist, der wählt, sondern der, der bewertet wird 
+        //_games[gameId].vote(_players_games[userToken].second, category, value);
+
+        
+        _games[gameId].vote(username_vote, category, value);
+
+
+        return _games[gameId];
+
+    }
+
+    Board Controller::rate(int gameId, int userToken) {
+        // Check if user is assigned to the game.
+        if (!userIsAssigned(gameId, userToken)) {
+            throw invalid_argument("Du bist diesem Spiel noch nicht beigetreten.");
+        }
+
+        _games[gameId].rate_players();
+        return _games[gameId];
     }
 }

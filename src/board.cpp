@@ -1,7 +1,8 @@
 #include <stadt_land_fluss/board.hpp>
-
+#include <iostream>
 #include <stdexcept>
 #include <algorithm>
+#include <chrono>
 
 using namespace std;
 
@@ -51,7 +52,7 @@ namespace StadtLandFluss {
         _settings = settings;
     }
 
-    map<char,map<string,map<string,string>>> Board::get_data() { return _data; }
+    map<char, map<string, map<string, pair<string, std::vector<bool>>>>>  Board::get_data() { return _data; }
 
     vector<string> Board::get_categories() { return _categories; }
 
@@ -85,10 +86,11 @@ namespace StadtLandFluss {
         // Remove the new letter from the list.
         _letters.erase(itActiveLetter);
 
-        // TODO: Timer.
-
         // Update the status.
         _status = BoardStatus::Spielen;
+
+        // Start the timer.
+        _startTime = std::chrono::system_clock::now();
     }
 
     void Board::stop(string userName) {
@@ -130,9 +132,16 @@ namespace StadtLandFluss {
         if (value[0] != _currentLetter) {
             throw invalid_argument("Dein Eintrag beginnt nicht mit dem korrekten Buchstaben.");
         }
-
-        // Insert the category value.
-        _data[_currentLetter][userName][category] = value;
+        
+        // Check if the user is adding new category within the time limit. If not change _status to "Bewerten".
+        std::chrono::system_clock::time_point momentOfSubmittingACategory = std::chrono::system_clock::now();
+        std::chrono::duration<double> measuredDuration = momentOfSubmittingACategory - _startTime;
+        std::chrono::system_clock::time_point endTime = _startTime + std::chrono::seconds(_settings.timeLimit);
+        if (measuredDuration > std::chrono::duration<double>(endTime - _startTime)) {
+            _status = BoardStatus::Bewerten;  
+        } else {
+            _data[_currentLetter][userName][category] = pair<string, vector<bool>>(value, {});
+        } 
     }
 
     void Board::add_category(string category) {
@@ -163,4 +172,56 @@ namespace StadtLandFluss {
 
         _categories.erase(itCategory);
     }
+    void Board::vote(string userName, string category, bool value) {
+        // Checks if player is in voting phase
+        if(_status != BoardStatus::Bewerten) {
+            throw invalid_argument("Die Kategorien können nicht zu diesem Zeitpunkt bewertet werden.");
+        }
+
+        // Checks if there are any votes left
+        if(_data[_currentLetter][userName][category].second.size() > _players.size()-1) {
+            throw invalid_argument("Kategorie wurde schon von allen bewertet.");
+        }
+
+        // Given boolean value is pushed into the bool array of the player that gets voted on
+        _data[_currentLetter][userName][category].second.push_back(value);
+    }
+
+    void Board::rate_players() {
+
+        map<string, string> player_category;
+
+        for (auto& player: _players) {
+        std::cout << "Spieler: " << player.first << "\n ";
+        int number_upvotes = 0;
+            for(auto& category: _categories ) {
+                //players.push_back(player.first);
+                
+                // Schleifendurchgang durch jede Kategorie und Spielernamen
+
+                // Schreiben der votes von bools in ein neues Array zum Rechnen
+                std::vector<bool> arr_votes = _data[_currentLetter][player.first][category].second;
+
+                // Wenn vote true ist, wird aufsummiert
+                for(bool votes: arr_votes) {
+                    if(votes) {
+                        number_upvotes += 1;
+                    }
+                }
+
+                // Wenn Anzahl von Upvotes mindestens 50%, gilt die Kategorie
+                int num_players = _players.size() -1;
+                if( (num_players - number_upvotes) <= (num_players/2)) {
+                    
+                    _players[player.first] += 10;
+                }
+                // ZUrücksetzen der Upvotes pro Kategorie
+                number_upvotes = 0;
+            }
+        }
+    }
+
+    vector<char> Board::get_letters() { return _letters; }
+
+    std::chrono::system_clock::time_point Board::get_startTime() { return _startTime; }
 }

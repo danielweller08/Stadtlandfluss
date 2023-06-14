@@ -4,6 +4,7 @@
 #include <map>
 #include <vector>
 #include <random>
+#include <chrono>
 
 using namespace std;
 
@@ -17,6 +18,11 @@ namespace StadtLandFluss {
     };
 
     struct BoardSettings {
+        const int &get_roundsAmount() const { return roundsAmount; }
+        const vector<char> &get_allowedLetters() const { return allowedLetters; }
+        const bool &get_endRoundManually() const { return endRoundManually; }
+        const int &get_timeLimit() const { return timeLimit; }
+
         int roundsAmount;
         vector<char> allowedLetters;
         bool endRoundManually;
@@ -63,7 +69,7 @@ namespace StadtLandFluss {
 
             /// @brief Gets the boards data.
             /// @return The boards data.
-            map<char, map<string, map<string, string>>> get_data();
+            map<char, map<string, map<string, pair<string, std::vector<bool>>>>> get_data();
 
             /// @brief Gets the boards categories.
             /// @return The boards categories.
@@ -73,9 +79,17 @@ namespace StadtLandFluss {
             /// @return The current letter.
             char get_currentLetter();
 
+            /// @brief Gets the letters.
+            /// @return The letters.
+            vector<char> get_letters();
+
             /// @brief Gets the boards current round.
             /// @return The current round.
             int get_currentRound();
+
+            /// @brief Gets the start time.
+            /// @return The start time.
+            std::chrono::system_clock::time_point get_startTime();
 
             /// @brief Starts or continues the game.
             /// @param rndGen The random number generator to get a new letter from.
@@ -98,6 +112,16 @@ namespace StadtLandFluss {
             /// @brief Removes a category.
             /// @param category The category to be removed.
             void remove_category(string category);
+            
+            /// @brief Player has one vote for every category of each player except itself
+            /// @param userName The name of the user.
+            /// @param category The category to be voted on.
+            /// @param value boolean value of the vote, yes for an upvote and no for a downvote.
+            void vote(string userName, string category, bool value);
+        
+
+            /// @brief After voting points get added up and assigned to the players' score
+            void rate_players();
 
         private:
             /// @brief Id of the board. Equivalent to gameId.
@@ -107,7 +131,8 @@ namespace StadtLandFluss {
             /// @brief Board settings.
             BoardSettings _settings;
             /// @brief Board data.
-            map<char, map<string, map<string, string>>> _data;
+            /// @remark currentLetter, username, category, (submitted_category, arr_bool)
+            map<char, map<string, map<string, pair<string, std::vector<bool>>>>> _data;
             /// @brief Categories.
             vector<string> _categories;
             /// @brief Player names and their scores.
@@ -118,5 +143,7 @@ namespace StadtLandFluss {
             char _currentLetter;
             /// @brief Number of the current round.
             int _currentRound;
+            /// @brief Time point when game is started.
+            std::chrono::system_clock::time_point _startTime;           
     };
 }
