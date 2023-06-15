@@ -70,6 +70,19 @@ namespace StadtLandFluss {
 
     Board Controller::join_game(int gameId, string userName, int userToken)
     {
+        // Check if gameId exists.
+        bool gameFound = false;
+        for (auto game: _games) {
+            if (game.first == gameId) {
+                gameFound = true;
+                break;
+            }
+        }
+
+        if (!gameFound) {
+            throw invalid_argument("Das Spiel mit dieser GameId existiert nicht.");
+        }
+
         // Check if user is assigned to any game.
         for (auto player_game: _players_games) {
             if (player_game.first == userToken) {

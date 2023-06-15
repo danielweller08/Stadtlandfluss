@@ -23,23 +23,21 @@ import uvicorn
 
 def board_toJson(board: Board):
    return {
-      "board": {
-         "id": board.get_id(),
-         "status": board.get_status().name,
-         "settings": {
-            "roundsAmount": board.get_settings().get_roundsAmount(),
-            "allowedLetters": board.get_settings().get_allowedLetters(),
-            "endRoundManually": board.get_settings().get_endRoundManually(),
-            "timeLimit": board.get_settings().get_timeLimit()
-         },
-         "data": board.get_data(),
-         "categories": board.get_categories(),
-         "players": board.get_players(),
-         "letters": board.get_letters(),
-         "currentLetter": board.get_currentLetter(),
-         "currentRound": board.get_currentRound(),
-         "startTime": board.get_startTime()
-      }
+      "id": board.get_id(),
+      "status": board.get_status().name,
+      "settings": {
+         "roundsAmount": board.get_settings().get_roundsAmount(),
+         "allowedLetters": board.get_settings().get_allowedLetters(),
+         "endRoundManually": board.get_settings().get_endRoundManually(),
+         "timeLimit": board.get_settings().get_timeLimit()
+      },
+      "data": board.get_data(),
+      "categories": board.get_categories(),
+      "players": board.get_players(),
+      "letters": board.get_letters(),
+      "currentLetter": board.get_currentLetter(),
+      "currentRound": board.get_currentRound(),
+      "startTime": board.get_startTime()
    }
 
 class CreateGameRequest(BaseModel):
@@ -70,12 +68,19 @@ controller = Controller()
 # Mit diesem Objekt wird der Webservice konfiguriert
 api = FastAPI()
 
-@api.get("/games")
-async def get_games():
+# @api.get("/games")
+# async def get_games():
+#    try:
+#       return {
+#          "games": controller.get_games()
+#       }
+#    except Exception as e:
+#       raise HTTPException(status_code=400, detail=str(e))
+
+@api.get("/games/{gameId}")
+async def get_games(gameId: int, userToken: int):
    try:
-      return {
-         "games": controller.get_games()
-      }
+      return board_toJson(controller.get_game(gameId, userToken))
    except Exception as e:
       raise HTTPException(status_code=400, detail=str(e))
 
@@ -127,17 +132,17 @@ async def update_settings(gameId: int, userToken: int, request: UpdateSettingsRe
    except Exception as e:
       raise HTTPException(status_code=400, detail=str(e))
 
-@api.put("/games/{gameId}/categories", status_code=201)
+@api.post("/games/{gameId}/categories", status_code=201)
 async def create_category(gameId: int, userToken: int, request: CreateCategoryRequest):
    try:
       return board_toJson(controller.create_category(gameId, userToken, request.category))
    except Exception as e:
       raise HTTPException(status_code=400, detail=str(e))
 
-@api.delete("games/{gameId}/categories/{category}")
+@api.delete("/games/{gameId}/categories/{category}")
 async def delete_category(gameId: int, category: str, userToken: int):
    try:
-      return board_toJson(controller.delete_category(gameId, category, userToken))
+      return board_toJson(controller.delete_category(gameId, userToken, category))
    except Exception as e:
       raise HTTPException(status_code=400, detail=str(e))
 
@@ -149,9 +154,9 @@ async def submit_category(gameId: int, category: str, userToken: int, request: S
       raise HTTPException(status_code=400, detail=str(e))
 
 @api.post("/games/{gameId}/categories/{category}/vote")
-async def vote(gameId: int, cateogory: str, userToken: int, request: VoteRequest):
+async def vote(gameId: int, category: str, userToken: int, request: VoteRequest):
    try:
-      return board_toJson(controller.vote(gameId, userToken, request.userName, cateogory, request.value))
+      return board_toJson(controller.vote(gameId, userToken, request.userName, category, request.value))
    except Exception as e:
       raise HTTPException(status_code=400, detail=str(e))
 
