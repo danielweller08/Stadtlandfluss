@@ -15,6 +15,8 @@ namespace StadtLandFluss {
         _settings.endRoundManually = true;
         _settings.roundsAmount = 10;
         _settings.timeLimit = 60;
+        _currentRound = 0;
+        _currentLetter = ' ';
         _categories = {"Stadt", "Land", "Fluss"};
     }
 
@@ -67,7 +69,11 @@ namespace StadtLandFluss {
         } else if (_status == BoardStatus::Ergebnisse) {
             throw invalid_argument("Das Spiel ist beendet und kann nicht erneut gestartet werden.");
         } else if (_status == BoardStatus::Bewerten) {
-            // TODO: Check if every player has been rated.
+            // Check if this was the last round.
+            if (_settings.roundsAmount == _currentRound){
+                _status = BoardStatus::Ergebnisse;
+                throw invalid_argument("Das Spiel ist vorbei, keine nächste Runde möglich");
+            }
         }
 
         // Pull letters from settings if prep phase.
@@ -91,6 +97,9 @@ namespace StadtLandFluss {
 
         // Start the timer.
         _startTime = std::chrono::system_clock::now();
+
+        // Increment current round.
+        _currentRound++;
     }
 
     void Board::stop(string userName) {

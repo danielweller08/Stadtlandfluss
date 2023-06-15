@@ -7,6 +7,7 @@ from requests import Response
 from pprint import pprint # Bei größeren Dicts sollte man pprint(...) statt print(...) verwenden
 
 board = None
+polling = False
 user_isInInput = False
 statusChangedDuringInput = False
 
@@ -39,13 +40,14 @@ def checkSuccess(response : Response):
         return True
     
 def poll(args):
+    global pollling
     global user_isInInput
     global board
     global statusChangedDuringInput
     base_api_url = args[0]
     gameId = args[1]
     userToken = args[2]
-    while True:
+    while polling == True:
         response = requests.get(f"{base_api_url}/games/{gameId}?userToken={userToken}")
         if checkSuccess(response):
             board_new = response.json()
@@ -72,6 +74,7 @@ def start_thread(function_name, *args, **kwargs):
 
 def main():
     global board
+    global polling
     global statusChangedDuringInput
     global user_isInInput
 
@@ -87,7 +90,6 @@ def main():
         response = requests.get(base_api_url + "/userToken/new")
         response_json = response.json()
         userToken = response_json["userToken"]
-        print(f"UserToken: {userToken}")
     except Exception:
         print("Fehler beim Verbinden mit der API. Drücke Enter um das Programm zu verlassen")
         input()
@@ -121,6 +123,7 @@ def main():
                 return
 
         # Start polling
+        polling = True
         pollingThread = start_thread(poll, [base_api_url, gameId, userToken])
 
         # Vorbereitung
@@ -340,9 +343,16 @@ def main():
             # Bewertung
             print()
             print("Bewertung mit [J/N]:")
+            killLoop = False
             for category in board["categories"]:
+                if killLoop == True:
+                    break
+
                 print(f"Kategorie: {category}")
                 for user in board["players"]:
+                    if killLoop == True:
+                        break
+
                     if user != userName:
                         while True:
                             try: 
@@ -351,6 +361,7 @@ def main():
                                 vote = input(f"  {user}: {board['data'][board['currentLetter']][user][category][0]}: ")
                                 user_isInInput = False
                                 if statusChangedDuringInput == True:
+                                    killLoop = True
                                     break
 
                                 if vote.upper() == "J":
@@ -364,6 +375,7 @@ def main():
                                 response = requests.post(f"{base_api_url}/games/{gameId}/categories/{category}/vote?userToken={userToken}", json = { "userName": user, "value": vote_bool})
                                 if checkSuccess(response):    
                                     board = response.json()
+                                    break
                             except:
                                 if retry == False:
                                     break
@@ -380,33 +392,37 @@ def main():
                 if board["status"] == "Ergebnisse":
                     break
 
-            # Rate the game
-            response = requests.post(f"{base_api_url}/games/{gameId}/rate?userToken={userToken}")
-            checkSuccess(response)
+            if board["currentRound"] != board["settings"]["roundsAmount"]:
+                option5 = option(["Nächste Runde", "Spiel Verlassen"])
+                if statusChangedDuringInput == True:
+                    statusChangedDuringInput = False
+                    continue
 
-            # Continue or quit
-            option5 = option(["Nächste Runde", "Spiel Verlassen"])
-            if statusChangedDuringInput == True:
-                statusChangedDuringInput = False
-                if board["status"] == "Ergebnisse":
-                    break
-
-            if option5 == "Nächste Runde":
-                response = requests.post(f"{base_api_url}/games/{gameId}/start?userToken={userToken}")
-                if checkSuccess(response) == False:    
-                    try:
-                        requests.post(f"{base_api_url}/games/{gameId}/quit?userToken={userToken}")
+                if option5 == "Nächste Runde":
+                    response = requests.post(f"{base_api_url}/games/{gameId}/rate?userToken={userToken}")
+                    if checkSuccess(response) == False:
                         break
-                    except:
-                        break
-                else:
+                    
                     board = response.json()
-            elif option5 == "Spiel Verlassen":
-                try:
-                    requests.post(f"{base_api_url}/games/{gameId}/quit?userToken={userToken}")
+                    response = requests.post(f"{base_api_url}/games/{gameId}/start?userToken={userToken}")
+                    if checkSuccess(response) == False:
+                        break
+
+                    board = response.json()
+                    
+                    continue
+                elif option5 == "Spiel Verlassen":
                     break
-                except:
-                    break
+            else:
+                break
+
+        option(["Spiel für alle beenden?"])
+        if statusChangedDuringInput == False:
+            response = requests.post(f"{base_api_url}/games/{gameId}/rate?userToken={userToken}")
+            if checkSuccess(response) == True:
+                board = response.json()
+
+        statusChangedDuringInput = False
 
         # Punkteausgabe
         print()
@@ -421,7 +437,7 @@ def main():
 
         print("-------------------------------------------------------------")
 
-        pollingThread.stop()
+        polling = False
 
 
   

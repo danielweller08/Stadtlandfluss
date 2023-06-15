@@ -110,8 +110,6 @@ namespace StadtLandFluss {
             return;
         }
 
-        // Remove the player from the board.
-        _games[gameId].remove_player(_players_games[userToken].second);
         // Remove the player game assignment.
         _players_games.erase(userToken);
         // Check if no players were left in the game.
